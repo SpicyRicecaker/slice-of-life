@@ -1,0 +1,8 @@
+{
+  "days": [
+    {
+      "date": "123",
+      "data": [{ "label": "HELLO", "value": 0.04 }]
+    }
+  ]
+}
