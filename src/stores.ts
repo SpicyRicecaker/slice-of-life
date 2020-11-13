@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 // Chart!
-export const doughnut:any = writable({});
+export const doughnut: any = writable({});
 
 // Data for chart
 interface point {
@@ -19,7 +19,7 @@ export const year = writable({
   days: [
     {
       date: new Date('123'),
-      data: [{ x: 'HELLO', y: 0.04 }],
+      data: [{ x: 'Sleep', y: 33 }],
     },
   ],
 });
@@ -27,4 +27,4 @@ export const year = writable({
 export const options = writable({});
 
 // Labels for chart
-export const labels = writable([]);
+export const labels = writable(['One', 'Two', 'Three']);
