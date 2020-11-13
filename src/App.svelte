@@ -2,42 +2,8 @@
   import Chart from './Chart.svelte';
   import Input from './Input.svelte';
   import List from './List.svelte';
-  interface dataPoint {
-    x: string;
-    y: number;
-  }
-  interface day {
-    date: Date;
-    data: dataPoint[];
-  }
+  import Save from './Save.svelte';
 
-  interface year {
-    days: day[];
-  }
-
-  let year: year = {
-    days: [
-      {
-        date: new Date('123'),
-        data: [{ x: 'HELLO', y: 0.04 }],
-      },
-    ],
-  };
-
-  let data = {
-    datasets: [
-      {
-        label: 'bob',
-        data: [
-          { x: '123', y: 123 },
-          { x: '345', y: 345 },
-        ],
-      },
-    ],
-    labels: [],
-  };
-
-  let options = {};
 </script>
 
 <style lang="scss">
@@ -99,6 +65,7 @@
   <div class="info">
     <Input />
     <List />
+  <Save/>
   </div>
-  <div class="header" />
+  <!-- <div class="header" /> -->
 </main>

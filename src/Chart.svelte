@@ -20,6 +20,8 @@
       $doughnut.update();
     }
   }
+  // https://coolors.co/6699cc-fff275-ff8c42
+  // https://coolors.co/483d3f-058ed9-f4ebd9
 
   let chartParams = {
     type: 'doughnut',
@@ -29,6 +31,7 @@
         {
           label: 'day 1',
           data: [],
+          backgroundColor: ['#D9E5D6', '#E8B4BC', '#00A7E1', '#EDDEA4', '#32936F']
         },
       ],
     },

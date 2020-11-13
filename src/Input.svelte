@@ -9,16 +9,27 @@
 
     const match = value.match(/(\d+)%/gi);
     if (match && label !== '') {
-      // Push values
-      console.log($year.days[0].data);
-      $year.days[0].data.push({
-        x: label,
-        y: parseInt(match[0]),
-      });
-      $year = $year;
-      // Update the graph
-      $doughnut.update();
+      let lookup = true;
+      // Lookup label
+      for (let i = 0; i < $year.days[0].data.length; ++i) {
+        // if it matches, just add to that obj
+        if ($year.days[0].data[i].x.match(new RegExp(label, 'i'))) {
+          $year.days[0].data[i].y += parseInt(value);
+          lookup = !lookup;
+          break;
+        }
+      }
+      if (lookup) {
+        // Otherwise just push values
+        $year.days[0].data.push({
+          x: label,
+          y: parseInt(match[0]),
+        });
+      }
     }
+    $year = $year;
+    // Update the graph
+    $doughnut.update();
     // Clear the thing
     inputLabel = '';
   };
