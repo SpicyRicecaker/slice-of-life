@@ -15,6 +15,7 @@
     "@rollup/plugin-node-resolve": "^8.0.0",
     "@rollup/plugin-typescript": "^6.0.0",
     "@tsconfig/svelte": "^1.0.0",
+    "@types/chart.js": "^2.9.27",
     "concurrently": "^5.3.0",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",

@@ -104,6 +104,13 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/svelte/-/svelte-1.0.10.tgz#30ec7feeee0bdf38b12a50f0686f8a2e7b6b9dc0"
   integrity sha512-EBrpH2iXXfaf/9z81koiDYkp2mlwW2XzFcAqn6qh7VKyP8zBvHHAQzNhY+W9vH5arAjmGAm5g8ElWq6YmXm3ig==
 
+"@types/chart.js@^2.9.27":
+  version "2.9.27"
+  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.27.tgz#716fd57b4cc791dc592cd424a44df95f2aefb918"
+  integrity sha512-b3ho2RpPLWzLzOXKkFwpvlRDEVWQrCknu2/p90mLY5v2DO8owk0OwWkv4MqAC91kJL52bQGXkVw/De+N/0/1+A==
+  dependencies:
+    moment "^2.10.2"
+
 "@types/estree@*":
   version "0.0.45"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.45.tgz#e9387572998e5ecdac221950dab3e8c3b16af884"
@@ -115,14 +122,14 @@
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
 
 "@types/node@*":
-  version "14.14.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.6.tgz#146d3da57b3c636cc0d1769396ce1cfa8991147f"
-  integrity sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==
+  version "14.14.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.7.tgz#8ea1e8f8eae2430cf440564b98c6dfce1ec5945d"
+  integrity sha512-Zw1vhUSQZYw+7u5dAwNbIA9TuTotpzY/OF7sJM9FqPOF3SPjKnxrjoTktXDZgUjybf4cWVBP7O8wvKdSaGHweg==
 
 "@types/node@^12.0.12":
-  version "12.19.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.19.3.tgz#a6e252973214079155f749e8bef99cc80af182fa"
-  integrity sha512-8Jduo8wvvwDzEVJCOvS/G6sgilOLvvhn1eMmK3TW8/T217O7u1jdrK6ImKLv80tVryaPSVeKu6sjDEiFjd4/eg==
+  version "12.19.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.19.4.tgz#cdfbb62e26c7435ed9aab9c941393cc3598e9b46"
+  integrity sha512-o3oj1bETk8kBwzz1WlO6JWL/AfAA3Vm6J1B3C9CsdxHYp7XgPiH7OEXPUbZTndHlRaIElrANkQfe6ZmfJb3H2w==
 
 "@types/pug@^2.0.4":
   version "2.0.4"
@@ -747,7 +754,7 @@ is-binary-path@~2.1.0:
   dependencies:
     binary-extensions "^2.0.0"
 
-is-core-module@^2.0.0:
+is-core-module@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.1.0.tgz#a4cc031d9b1aca63eecbd18a650e13cb4eeab946"
   integrity sha512-YcV7BgVMRFRua2FqQzKtTDMz8iCuLEyGKjr70q8Zm1yy2qKcurbFEd79PAdHV77oL3NrAaOVQIbMmiHQCHB7ZA==
@@ -1156,11 +1163,11 @@ resolve-from@^4.0.0:
   integrity sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==
 
 resolve@^1.10.0, resolve@^1.11.0, resolve@^1.17.0:
-  version "1.18.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.18.1.tgz#018fcb2c5b207d2a6424aee361c5a266da8f4130"
-  integrity sha512-lDfCPaMKfOJXjy0dPayzPdF1phampNWr3qFCjAu+rw/qbQmr5jWH5xN2hwh9QKfw9E5v4hwV7A+jrCmL8yjjqA==
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.19.0.tgz#1af5bf630409734a067cae29318aac7fa29a267c"
+  integrity sha512-rArEXAgsBG4UgRGcynxWIWKFvh/XZCcS8UJdHhwy91zwAvCZIbcs+vAbflgBnNjYMs/i/i+/Ux6IZhML1yPvxg==
   dependencies:
-    is-core-module "^2.0.0"
+    is-core-module "^2.1.0"
     path-parse "^1.0.6"
 
 responselike@^1.0.2:
@@ -1190,9 +1197,9 @@ rollup-plugin-livereload@^2.0.0:
     livereload "^0.9.1"
 
 rollup-plugin-svelte@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-svelte/-/rollup-plugin-svelte-6.1.0.tgz#bba94a37796fac1f73528161e84cc4976df431e1"
-  integrity sha512-TX1nIZSD6ePiSdYIEfpkvR7lLnP1nsSycCVz+vXbm5d5kIe5WMldo6fwcL/T8KPjc42XDgLaRcS74BorpQvpiA==
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-svelte/-/rollup-plugin-svelte-6.1.1.tgz#66362cf0500fb7a848283ebcf19d289a60ef0871"
+  integrity sha512-ijnm0pH1ScrY4uxwaNXBpNVejVzpL2769hIEbAlnqNUWZrffLspu5/k9/l/Wsj3NrEHLQ6wCKGagVJonyfN7ow==
   dependencies:
     require-relative "^0.8.7"
     rollup-pluginutils "^2.8.2"
@@ -1464,9 +1471,9 @@ svelte-preprocess@^4.0.0:
     strip-indent "^3.0.0"
 
 svelte@^3.0.0:
-  version "3.29.4"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.29.4.tgz#d0f80cb58109ef52963855c23496f7153bb2eb7e"
-  integrity sha512-oW0fGHlyFFMvzRtIvOs84b0fOc0gmZNQcL5Is3hxuTpvaYX3pfd8oHy4KnOvbq4Ca6SG6AHdRMk7OhApTo0NqA==
+  version "3.29.7"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.29.7.tgz#e254eb2d0d609ce0fd60f052d444ac4a66d90f7d"
+  integrity sha512-rx0g311kBODvEWUU01DFBUl3MJuJven04bvTVFUG/w0On/wuj0PajQY/QlXcJndFxG+W1s8iXKaB418tdHWc3A==
 
 terser@^5.0.0:
   version "5.3.8"
