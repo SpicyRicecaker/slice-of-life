@@ -20,7 +20,6 @@ export const options = writable({});
 // Labels for chart
 export const labels = writable(['One', 'Two', 'Three']);
 
-export const daysDB: any = writable([]);
 // Creating the DB
 export const dbPromise = openDB('days-store', 1, {
   upgrade(db) {
@@ -44,11 +43,15 @@ const createDays = (initStuff: day[]) => {
   return {
     subscribe,
     set,
-    splice: (index: number) => {
+    splice: async (index: number) => {
       // Clear the array, and the database at this specific date
     },
-    push: (day: day) => {},
+    push: async (day: day) => {
+      // 
+    },
   };
 };
+
+export const today = writable(new Date())
 
 export const days = createDays(initStuff);

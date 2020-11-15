@@ -1,8 +1,8 @@
 <script lang="ts">
   import { doughnut, days } from './stores';
 
-  const removeData = (i: number) => {
-    $days[0].data.splice(i, 1);
+  const removeData = (i: number, j: number) => {
+    $days[i].data.splice(j, 1);
     $days = $days;
     $doughnut.update();
   };
@@ -44,12 +44,12 @@
 </style>
 
 <div class="list">
-  {#each $days as day}
+  {#each $days as day, i}
     {#each day.data as point, j}
     <div class="list-item">
       <span class="value">{point.y}%</span>
       <span class="label">{point.x}</span>
-      <span class="remove" on:click={() => removeData(j)}>x</span>
+      <span class="remove" on:click={() => removeData(i, j)}>x</span>
     </div>
     {/each}
   {/each}
