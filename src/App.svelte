@@ -3,7 +3,6 @@
   import Input from './Input.svelte';
   import List from './List.svelte';
   import Save from './Save.svelte';
-
 </script>
 
 <style lang="scss">
@@ -65,7 +64,7 @@
   <div class="info">
     <Input />
     <List />
-  <Save/>
+    <Save />
   </div>
   <!-- <div class="header" /> -->
 </main>

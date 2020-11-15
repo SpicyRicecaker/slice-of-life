@@ -1,33 +1,40 @@
 <script lang="ts">
-  import { doughnut, year } from './stores';
+  import { doughnut, days } from './stores';
+  import Datepicker from 'svelte-calendar';
 
   let inputLabel = '';
   const addData = () => {
     const index = inputLabel.indexOf(' ');
     const value = inputLabel.substr(0, index); // "72"
     const label = inputLabel.substr(index + 1);
+    
+    const currentDay = new Date();
 
     const match = value.match(/(\d+)%/gi);
     if (match && label !== '') {
-      let lookup = true;
+      let noMatch = true;
       // Lookup label
-      for (let i = 0; i < $year.days[0].data.length; ++i) {
-        // if it matches, just add to that obj
-        if ($year.days[0].data[i].x.match(new RegExp(label, 'i'))) {
-          $year.days[0].data[i].y += parseInt(value);
-          lookup = !lookup;
-          break;
+      for (let i = 0; i < $days.length; ++i) {
+        for (let j = 0; j < $days[i].data.length; ++j) {
+          // if it matches, just add to that obj
+          if ($days[i].data[j].x.match(new RegExp(label, 'i'))) {
+            $days[i].data[j].y += parseInt(value);
+            noMatch = !noMatch;
+            break;
+          }
         }
       }
-      if (lookup) {
+      if (noMatch) {
+        // Get day at today
+        const dayToday = 0;
         // Otherwise just push values
-        $year.days[0].data.push({
+        $days[dayToday].data.push({
           x: label,
           y: parseInt(match[0]),
         });
       }
     }
-    $year = $year;
+    $days = $days;
     // Update the graph
     $doughnut.update();
     // Clear the thing
@@ -73,4 +80,5 @@
     on:keydown={(e) => handleKey(e)} /><button
     id="add-button"
     on:click={addData}>Add</button>
+  <Datepicker />
 </div>
