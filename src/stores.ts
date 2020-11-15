@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { openDB, deleteDB } from 'idb';
+import { openDB, deleteDB } from 'idb/with-async-ittr.js';
 
 // Chart!
 export const doughnut: any = writable({});
@@ -14,25 +14,32 @@ interface day {
   data: point[];
 }
 
-export const daysDB: any = writable([]);
-
 // Options for chart
 export const options = writable({});
 
 // Labels for chart
 export const labels = writable(['One', 'Two', 'Three']);
 
-const createDB = async () => {
-  console.log('created days db');
-  return await openDB('days');
-};
-
+export const daysDB: any = writable([]);
 // Creating the DB
-export const db = createDB();
+export const dbPromise = openDB('days-store', 1, {
+  upgrade(db) {
+    const store = db.createObjectStore('days', {
+      // The 'id' property of the object will be the key.
+      keyPath: 'id',
+      // If it isn't explicitly set, create a value by auto incrementing. (i.e. autogenerate keys for id)
+      autoIncrement: true,
+    });
+    // Create an index on the 'date' property of the objects.
+    store.createIndex('date', 'date');
+  },
+});
+
+const initStuff:day[] = [];
 
 // Create the data array
-const createDays = () => {
-  const { subscribe, set, update } = writable([]);
+const createDays = (initStuff: day[]) => {
+  const { subscribe, set, update } = writable(initStuff);
 
   return {
     subscribe,
@@ -40,10 +47,8 @@ const createDays = () => {
     splice: (index: number) => {
       // Clear the array, and the database at this specific date
     },
-    push: (day: day) => {
-
-    }
+    push: (day: day) => {},
   };
 };
 
-export const days = createDays();
+export const days = createDays(initStuff);

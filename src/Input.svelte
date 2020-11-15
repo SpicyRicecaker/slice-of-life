@@ -4,14 +4,17 @@
 
   let inputLabel = '';
   const addData = () => {
+    // Parsing input
     const index = inputLabel.indexOf(' ');
     const value = inputLabel.substr(0, index); // "72"
     const label = inputLabel.substr(index + 1);
-    
+
     const currentDay = new Date();
 
     const match = value.match(/(\d+)%/gi);
+    // If we get valid input
     if (match && label !== '') {
+      // First check if we already have the label in the db
       let noMatch = true;
       // Lookup label
       for (let i = 0; i < $days.length; ++i) {
@@ -24,6 +27,7 @@
           }
         }
       }
+      // If there is no match, then I guess we just have to
       if (noMatch) {
         // Get day at today
         const dayToday = 0;
@@ -80,5 +84,5 @@
     on:keydown={(e) => handleKey(e)} /><button
     id="add-button"
     on:click={addData}>Add</button>
-  <Datepicker />
 </div>
+<Datepicker />

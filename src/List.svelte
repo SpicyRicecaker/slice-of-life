@@ -44,11 +44,13 @@
 </style>
 
 <div class="list">
-  {#each $days as day, i}
+  {#each $days as day}
+    {#each day.data as point, j}
     <div class="list-item">
-      <span class="value">{day.data.y}%</span>
-      <span class="label">{day.data.x}</span>
-      <span class="remove" on:click={() => removeData(i)}>x</span>
+      <span class="value">{point.y}%</span>
+      <span class="label">{point.x}</span>
+      <span class="remove" on:click={() => removeData(j)}>x</span>
     </div>
+    {/each}
   {/each}
 </div>
