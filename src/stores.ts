@@ -52,6 +52,12 @@ const createDays = (initStuff: day[]) => {
   };
 };
 
-export const today = writable(new Date())
+
+const getBeginning = (date: Date) => date.setHours(0, 0, 0, 0);
+const getEnd = (date: Date) => date.setHours(23, 59, 59, 999);
+
+export const today = writable(new Date());
+export const todayPre = writable(new Date(getBeginning(new Date())));
+export const todayPost = writable(new Date(getEnd(new Date())));
 
 export const days = createDays(initStuff);

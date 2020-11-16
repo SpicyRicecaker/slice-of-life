@@ -9,8 +9,6 @@
     const value = inputLabel.substr(0, index); // "72"
     const label = inputLabel.substr(index + 1);
 
-    const currentDay = new Date();
-
     const match = value.match(/(\d+)%/gi);
     // If we get valid input
     if (match && label !== '') {

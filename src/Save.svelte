@@ -1,18 +1,32 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { dbPromise, days, today } from './stores';
+  import { dbPromise, days, today, todayPre, todayPost } from './stores';
 
   // Load all things from db
   onMount(async () => {
-    // Add dummy data
-    await (await dbPromise).add('days', {
-      date: new Date('2019-01-01'),
-      data: [{ x: 'Sleep', y: 33 }],
-    });
-    let transaction2 = await (await dbPromise).transaction('days');
-    // Loop through database and add data for all days
-    for await (const cursor of transaction2.store) {
-      $days.push(cursor.value);
+    // Get date index
+    const dateIdx = await (await dbPromise)
+      .transaction('days')
+      .objectStore('days')
+      .index('date');
+
+    // Is there a dataset with todays date?
+    const dateCursor = await dateIdx.openCursor(
+      IDBKeyRange.bound($todayPre, $todayPost)
+    );
+    
+    // If so, load data
+    if (dateCursor) {
+      for await (const date of dateCursor) {
+        $days.push(date.value);
+      }
+    }
+    else {
+      // Otherwise, create a new dataset for today
+      await (await dbPromise).add('days', {
+        date: $today,
+        data: [{ x: 'Sleep', y: 33 }],
+      });
     }
     $days = $days;
   });

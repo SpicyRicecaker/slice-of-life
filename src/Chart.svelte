@@ -31,7 +31,6 @@
       // Push data to datasets
       chartParams.data.datasets.push(tDay);
     }
-    console.log(chartParams);
 
     if (mounted) {
       $doughnut.update();
