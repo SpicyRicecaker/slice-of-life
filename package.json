@@ -1,8 +1,27 @@
 {
-  "name": "svelte-app",
-  "version": "1.0.0",
+  "name": "slice-of-life",
+  "version": "0.0.1",
+  "description": "Your life in percentages",
   "main": "main.js",
+  "build": {
+    "appId": "io.github.spicyricecaker.app",
+    "productName": "Slice of Life",
+    "directories": {
+      "buildResources": "public"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  },
   "scripts": {
+    "dist": "yarn build && electron-builder",
     "build": "rollup -c",
     "dev": "concurrently -k \"yarn:dev-*\"",
     "dev-svelte": "rollup -c -w",
@@ -10,6 +29,22 @@
     "start": "sirv public",
     "validate": "svelte-check"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpicyRicecaker/slice-of-life.git"
+  },
+  "keywords": [
+    "slice",
+    "life",
+    "pie",
+    "percent"
+  ],
+  "author": "SpicyRicecaker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SpicyRicecaker/slice-of-life/issues"
+  },
+  "homepage": "https://github.com/SpicyRicecaker/slice-of-life#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
@@ -17,6 +52,8 @@
     "@tsconfig/svelte": "^1.0.0",
     "@types/chart.js": "^2.9.27",
     "concurrently": "^5.3.0",
+    "electron": "^11.0.0",
+    "electron-builder": "^22.9.1",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^6.0.0",
@@ -30,9 +67,7 @@
   },
   "dependencies": {
     "chart.js": "^2.9.4",
-    "electron": "^10.1.5",
     "idb": "^5.0.7",
-    "sirv-cli": "^1.0.0",
-    "svelte-calendar": "^1.5.0"
+    "sirv-cli": "^1.0.0"
   }
 }
