@@ -1,10 +1,25 @@
 <script lang="ts">
-  import { doughnut, days, today} from './stores';
+  import { doughnut, days, today } from './stores';
+  import { dbPromise, todayPre, todayPost } from './stores';
 
-  const removeData = (i: number, j: number) => {
+  const removeData = async (i: number, j: number) => {
     $days[i].data.splice(j, 1);
     $days = $days;
     $doughnut.update();
+
+    const dateIdx = await (await dbPromise)
+      .transaction('days', 'readwrite')
+      .objectStore('days')
+      .index('date');
+    // Is there a dataset with todays date?
+    const dateCursor = await dateIdx.openCursor(
+      IDBKeyRange.bound($todayPre, $todayPost)
+    );
+    // Update it
+    for await (const date of dateCursor) {
+      date.value.data.splice(j, 1);
+      dateCursor.update(date.value);
+    }
   };
 
   // Today len
@@ -12,7 +27,7 @@
   $: {
     const l = $days.length;
     if (l > 0) {
-      noPoint = $days[l-1].data.length === 0;
+      noPoint = $days[l - 1].data.length === 0;
     }
   }
 </script>
