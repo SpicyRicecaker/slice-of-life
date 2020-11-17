@@ -1,6 +1,13 @@
 <script lang="ts">
   import { doughnut, days, daysDb, todayPre, todayPost } from './stores';
 
+  interface point {
+    x: string;
+    y: number;
+    dateCreated: Date;
+    dateModified: Date;
+  }
+
   let inputLabel = '';
   const addData = async () => {
     // Parsing input
@@ -42,9 +49,11 @@
         // Get day at today
         const dayToday = 0;
         // Otherwise just push values
-        const newPoint = {
+        const newPoint: point = {
           x: label,
           y: parseInt(match[0]),
+          dateCreated: new Date(),
+          dateModified: new Date(),
         };
 
         $days[dayToday].data.push(newPoint);
@@ -55,16 +64,16 @@
         );
         // Update it
         for await (const date of dateCursor) {
-          date.value.data.push({ x: label, y: parseInt(match[0]) });
+          date.value.data.push(newPoint);
           dateCursor.update(date.value);
         }
       }
+      $days = $days;
+      // Update the graph
+      $doughnut.update();
+      // Clear the thing
+      inputLabel = '';
     }
-    $days = $days;
-    // Update the graph
-    $doughnut.update();
-    // Clear the thing
-    inputLabel = '';
   };
 
   const handleKey = (e: KeyboardEvent) => {

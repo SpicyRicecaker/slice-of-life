@@ -31,15 +31,25 @@
 <style lang="scss">
   .list {
     grid-area: list;
+    // Make every list item extend down
+    display: flex;
+    flex-direction: column;
   }
 
   .list-item {
+    // height: .5rem;
+    // box-shadow: 0rem 0.1rem 0.3rem 0.1rem #;
+    padding: 0.5rem;
     &:hover {
       cursor: default;
       & .remove {
         display: inline-block;
         cursor: pointer;
       }
+    }
+    // Inspiration for separators from this site: https://codepen.io/equinusocio/pen/OqpBKJ
+    & + .list-item {
+      border-top: 1px dashed #2b2b2b40;
     }
   }
 
@@ -50,15 +60,10 @@
   }
 
   .label {
-    // text-decoration: underline;
   }
 
   .remove {
     color: tomato;
-    // padding: 0;
-    // background: none;
-    // border: none;
-    // outline: none;
     display: none;
   }
 </style>
@@ -72,6 +77,12 @@
       <div class="list-item">
         <span class="value">{point.y}%</span>
         <span class="label">{point.x}</span>
+        {#if point.dateCreated}
+          <span class="label">{point.dateCreated.toLocaleTimeString()}</span>
+        {/if}
+        {#if point.dateModified}
+          <span class="label">{point.dateModified.toLocaleTimeString()}</span>
+        {/if}
         <span class="remove" on:click={() => removeData(i, j)}>x</span>
       </div>
     {/each}

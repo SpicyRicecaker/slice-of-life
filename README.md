@@ -11,13 +11,13 @@
     - Date
     - Animations
 # Candy
+  - Color palette generator for doughnut
   - Have some sort of data backup
     - Github OAuth
   
 # Icing
   - Yearly time use as dynamic square grid
   - Syntax Highlighting for subjects
-  - Color palette generator for doughnut
 
 # IndexedDB Optimization
   - Make set and push update db

@@ -8,6 +8,8 @@ export const doughnut: any = writable({});
 interface point {
   x: string;
   y: number;
+  dateCreated: Date;
+  dateModified: Date;
 }
 interface day {
   date: Date;
@@ -46,7 +48,7 @@ class db {
       },
     });
   }
-  getDb = async () => await this.db
+  getDb = async () => await this.db;
   // Finds today's date
   getCursorFromDateRange = async (dateBeg: Date, dateEnd: Date) => {
     const dateIdx = await (await this.db)

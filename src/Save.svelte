@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { daysDb, days, today, todayPre, todayPost } from './stores';
 
   const pullData = async (currDate: Date) => {
