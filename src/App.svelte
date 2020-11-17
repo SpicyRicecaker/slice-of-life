@@ -3,6 +3,7 @@
   import Input from './Input.svelte';
   import List from './List.svelte';
   import Save from './Save.svelte';
+  import Date from './Date.svelte';
 </script>
 
 <style lang="scss">
@@ -19,7 +20,7 @@
     display: grid;
     // Display grid is always in string
     grid-template:
-      'header header' 3rem
+      'header other' 3rem
       'chart info' minmax(0, 10fr)
       / minmax(0, 1fr) minmax(0, 1fr);
   }
@@ -40,6 +41,10 @@
 
   .header {
     grid-area: header;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    justify-items: stretch;
+    align-items: stretch;
   }
 
   /* h1 {
@@ -58,6 +63,9 @@
 </style>
 
 <main>
+  <div class="header">
+    <Date/>
+  </div>
   <div class="chart-container">
     <Chart />
   </div>

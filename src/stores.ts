@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 import { openDB } from 'idb/with-async-ittr.js';
 
 // Chart!
@@ -34,7 +34,17 @@ export const dbPromise = openDB('days-store', 1, {
   },
 });
 
-const initStuff:day[] = [];
+const initStuff: day[] = [];
+
+const getBeginning = (date: Date) => date.setHours(0, 0, 0, 0);
+const getEnd = (date: Date) => date.setHours(23, 59, 59, 999);
+
+export const today = writable(new Date());
+export const todayPre = derived(
+  today,
+  ($today) => new Date(getBeginning($today))
+);
+export const todayPost = derived(today, ($today) => new Date(getEnd($today)));
 
 // Create the data array
 const createDays = (initStuff: day[]) => {
@@ -47,17 +57,9 @@ const createDays = (initStuff: day[]) => {
       // Clear the array, and the database at this specific date
     },
     push: async (day: day) => {
-      // 
+      //
     },
   };
 };
-
-
-const getBeginning = (date: Date) => date.setHours(0, 0, 0, 0);
-const getEnd = (date: Date) => date.setHours(23, 59, 59, 999);
-
-export const today = writable(new Date());
-export const todayPre = writable(new Date(getBeginning(new Date())));
-export const todayPost = writable(new Date(getEnd(new Date())));
 
 export const days = createDays(initStuff);

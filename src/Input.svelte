@@ -114,4 +114,3 @@
     id="add-button"
     on:click={addData}>Add</button>
 </div>
-<Datepicker />

@@ -2,10 +2,10 @@
   import { onMount } from 'svelte';
   import { dbPromise, days, today, todayPre, todayPost } from './stores';
 
-  // Load all things from db
-  onMount(async () => {
+  const pullData = async (currDate: Date) => {
+    $days = [];
     // Get date index
-const dateIdx = await (await dbPromise)
+    const dateIdx = await (await dbPromise)
       .transaction('days')
       .objectStore('days')
       .index('date');
@@ -24,14 +24,21 @@ const dateIdx = await (await dbPromise)
     } else {
       console.log('creating sample dataset for today');
       // Otherwise, create a new dataset for today
-      const data = { date: $today, data: [] };
+      const data = { date: currDate, data: [] };
       // Update the database
       await (await dbPromise).add('days', data);
       // And the current array
       $days.push(data);
     }
     $days = $days;
-  });
+  };
+
+  $: {
+    pullData($today);
+  }
+
+  // Load all things from db
+  // onMount(async () => pullData($today));
 
   // Write to appdata
   const saveData = () => {};
@@ -48,6 +55,6 @@ const dateIdx = await (await dbPromise)
   };
 </script>
 
-<button on:click={saveData}>Save</button>
-<button on:click={loadData}>Load</button>
-<button on:click={destroyData}>Destroy</button>
+<!-- <button on:click={saveData}>Save</button>
+<button on:click={loadData}>Load</button> -->
+<button on:click={destroyData}>[Debug] Destroy</button>
