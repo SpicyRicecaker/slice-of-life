@@ -93,16 +93,26 @@
 <style lang="scss">
   .input {
     grid-area: input;
+    // Make the input box much bigger than the button
     display: grid;
+    align-items: stretch;
+    justify-items: stretch;
     grid-template-columns: minmax(0, 5fr) minmax(0, 1fr);
+    border: 1px solid #2b2b2b40;
+    // border-radius:1rem; 
+    margin: 0;
   }
 
   #data-input {
     border-radius: 0;
+    border: none;
+    outline: none;
   }
 
   #add-button {
     border-radius: 0;
+    border: none;
+    outline: none;
   }
 </style>
 
@@ -112,7 +122,6 @@
     type="text"
     bind:value={inputLabel}
     placeholder="[num]% [label]"
-    on:keydown={(e) => handleKey(e)} /><button
-    id="add-button"
-    on:click={addData}>Add</button>
+    on:keydown={(e) => handleKey(e)} />
+  <button id="add-button" on:click={addData}>+</button>
 </div>

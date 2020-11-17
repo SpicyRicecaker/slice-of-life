@@ -38,7 +38,6 @@
 
   .list-item {
     // height: .5rem;
-    // box-shadow: 0rem 0.1rem 0.3rem 0.1rem #;
     padding: 0.5rem;
     &:hover {
       cursor: default;
