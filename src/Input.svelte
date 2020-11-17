@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { doughnut, days, dbPromise, todayPre, todayPost } from './stores';
-  import Datepicker from 'svelte-calendar';
+  import { doughnut, days, daysDb, todayPre, todayPost } from './stores';
 
   let inputLabel = '';
   const addData = async () => {
@@ -23,14 +22,9 @@
             $days[i].data[j].y += parseInt(value);
             noMatch = !noMatch;
             // Update database
-            // Load new date index
-            const dateIdx = await (await dbPromise)
-              .transaction('days', 'readwrite')
-              .objectStore('days')
-              .index('date');
-            // Is there a dataset with todays date?
-            const dateCursor = await dateIdx.openCursor(
-              IDBKeyRange.bound($todayPre, $todayPost)
+            const dateCursor = await daysDb.getCursorFromDateRange(
+              $todayPre,
+              $todayPost
             );
             // Update it
             for await (const date of dateCursor) {
@@ -48,21 +42,20 @@
         // Get day at today
         const dayToday = 0;
         // Otherwise just push values
-        $days[dayToday].data.push({
+        const newPoint = {
           x: label,
           y: parseInt(match[0]),
-        });
-        const dateIdx = await (await dbPromise)
-          .transaction('days', 'readwrite')
-          .objectStore('days')
-          .index('date');
-        // Is there a dataset with todays date?
-        const dateCursor = await dateIdx.openCursor(
-          IDBKeyRange.bound($todayPre, $todayPost)
+        };
+
+        $days[dayToday].data.push(newPoint);
+
+        const dateCursor = await daysDb.getCursorFromDateRange(
+          $todayPre,
+          $todayPost
         );
         // Update it
         for await (const date of dateCursor) {
-          date.value.data.push({x: label, y: parseInt(match[0])});
+          date.value.data.push({ x: label, y: parseInt(match[0]) });
           dateCursor.update(date.value);
         }
       }

@@ -21,18 +21,52 @@ export const options = writable({});
 export const labels = writable(['One', 'Two', 'Three']);
 
 // Creating the DB
-export const dbPromise = openDB('days-store', 1, {
-  upgrade(db) {
-    const store = db.createObjectStore('days', {
-      // The 'id' property of the object will be the key.
-      keyPath: 'id',
-      // If it isn't explicitly set, create a value by auto incrementing. (i.e. autogenerate keys for id)
-      autoIncrement: true,
+class db {
+  name;
+  version;
+  db;
+  constructor(name, version) {
+    // Update the name and version with new
+    this.name = name;
+    this.version = version;
+
+    // Next open the database
+    this.db = openDB(name, version, {
+      // Upgrade the database to the latest version as needed
+      upgrade(db) {
+        // By default create a days object store
+        const store = db.createObjectStore('days', {
+          // The 'id' property of the object will be the key.
+          keyPath: 'id',
+          // If it isn't explicitly set, create a value by auto incrementing. (i.e. autogenerate keys for id)
+          autoIncrement: true,
+        });
+        // Create an index on the 'date' property of the objects.
+        store.createIndex('date', 'date');
+      },
     });
-    // Create an index on the 'date' property of the objects.
-    store.createIndex('date', 'date');
-  },
-});
+  }
+  getDb = async () => await this.db
+  // Finds today's date
+  getCursorFromDateRange = async (dateBeg: Date, dateEnd: Date) => {
+    const dateIdx = await (await this.db)
+      .transaction('days', 'readwrite')
+      .objectStore('days')
+      .index('date');
+    // Is there a dataset with todays date?
+    return await dateIdx.openCursor(IDBKeyRange.bound(dateBeg, dateEnd));
+  };
+  insertObjectInCursor = async (cursor: any, obj: any) => {
+    for await (const date of cursor) {
+      date.value.data.push(obj);
+      cursor.update(date.value);
+    }
+  };
+  insertObjectInDatabase = async (obj) => {
+    (await this.db).add('days', obj);
+  };
+}
+export const daysDb = new db('days-store', 1);
 
 const initStuff: day[] = [];
 

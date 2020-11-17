@@ -1,19 +1,15 @@
 <script lang="ts">
   import { doughnut, days, today } from './stores';
-  import { dbPromise, todayPre, todayPost } from './stores';
+  import { daysDb, todayPre, todayPost } from './stores';
 
   const removeData = async (i: number, j: number) => {
     $days[i].data.splice(j, 1);
     $days = $days;
     $doughnut.update();
 
-    const dateIdx = await (await dbPromise)
-      .transaction('days', 'readwrite')
-      .objectStore('days')
-      .index('date');
-    // Is there a dataset with todays date?
-    const dateCursor = await dateIdx.openCursor(
-      IDBKeyRange.bound($todayPre, $todayPost)
+    const dateCursor = await daysDb.getCursorFromDateRange(
+      $todayPre,
+      $todayPost
     );
     // Update it
     for await (const date of dateCursor) {

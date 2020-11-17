@@ -1,18 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { dbPromise, days, today, todayPre, todayPost } from './stores';
+  import { daysDb, days, today, todayPre, todayPost } from './stores';
 
   const pullData = async (currDate: Date) => {
     $days = [];
     // Get date index
-    const dateIdx = await (await dbPromise)
-      .transaction('days')
-      .objectStore('days')
-      .index('date');
-
-    // Is there a dataset with todays date?
-    const dateCursor = await dateIdx.openCursor(
-      IDBKeyRange.bound($todayPre, $todayPost)
+    const dateCursor = await daysDb.getCursorFromDateRange(
+      $todayPre,
+      $todayPost
     );
 
     // If so, load data
@@ -26,7 +21,7 @@
       // Otherwise, create a new dataset for today
       const data = { date: currDate, data: [] };
       // Update the database
-      await (await dbPromise).add('days', data);
+      await daysDb.insertObjectInDatabase(data);
       // And the current array
       $days.push(data);
     }
@@ -46,7 +41,7 @@
   const loadData = () => {};
 
   const destroyData = async () => {
-    let transaction1 = await (await dbPromise).transaction('days', 'readwrite');
+    let transaction1 = await (await daysDb.getDb()).transaction('days', 'readwrite');
     // First clear store
     let daysStore = await (await transaction1).objectStore('days');
     await daysStore.clear();
@@ -57,4 +52,4 @@
 
 <!-- <button on:click={saveData}>Save</button>
 <button on:click={loadData}>Load</button> -->
-<button on:click={destroyData}>[Debug] Destroy</button>
+<!-- <button on:click={destroyData}>[Debug] Destroy</button> -->
