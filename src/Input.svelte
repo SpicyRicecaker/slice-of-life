@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { doughnut, days } from './stores';
+  import { doughnut, days, dbPromise, todayPre, todayPost } from './stores';
   import Datepicker from 'svelte-calendar';
 
   let inputLabel = '';
-  const addData = () => {
+  const addData = async () => {
     // Parsing input
     const index = inputLabel.indexOf(' ');
     const value = inputLabel.substr(0, index); // "72"
@@ -19,13 +19,31 @@
         for (let j = 0; j < $days[i].data.length; ++j) {
           // if it matches, just add to that obj
           if ($days[i].data[j].x.match(new RegExp(label, 'i'))) {
+            // Update array
             $days[i].data[j].y += parseInt(value);
             noMatch = !noMatch;
+            // Update database
+            // Load new date index
+            const dateIdx = await (await dbPromise)
+              .transaction('days', 'readwrite')
+              .objectStore('days')
+              .index('date');
+            // Is there a dataset with todays date?
+            const dateCursor = await dateIdx.openCursor(
+              IDBKeyRange.bound($todayPre, $todayPost)
+            );
+            // Update it
+            for await (const date of dateCursor) {
+              console.log(date.value.data[j]);
+              date.value.data[j].y += parseInt(value);
+              console.log(date.value.data[j]);
+              dateCursor.update(date.value);
+            }
             break;
           }
         }
       }
-      // If there is no match, then I guess we just have to
+      // If there is no match, then I guess we just have to push
       if (noMatch) {
         // Get day at today
         const dayToday = 0;
@@ -34,6 +52,19 @@
           x: label,
           y: parseInt(match[0]),
         });
+        const dateIdx = await (await dbPromise)
+          .transaction('days', 'readwrite')
+          .objectStore('days')
+          .index('date');
+        // Is there a dataset with todays date?
+        const dateCursor = await dateIdx.openCursor(
+          IDBKeyRange.bound($todayPre, $todayPost)
+        );
+        // Update it
+        for await (const date of dateCursor) {
+          date.value.data.push({x: label, y: parseInt(match[0])});
+          dateCursor.update(date.value);
+        }
       }
     }
     $days = $days;

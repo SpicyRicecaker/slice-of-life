@@ -5,7 +5,7 @@
   // Load all things from db
   onMount(async () => {
     // Get date index
-    const dateIdx = await (await dbPromise)
+const dateIdx = await (await dbPromise)
       .transaction('days')
       .objectStore('days')
       .index('date');
@@ -14,19 +14,21 @@
     const dateCursor = await dateIdx.openCursor(
       IDBKeyRange.bound($todayPre, $todayPost)
     );
-    
+
     // If so, load data
     if (dateCursor) {
+      console.log('loading data');
       for await (const date of dateCursor) {
         $days.push(date.value);
       }
-    }
-    else {
+    } else {
+      console.log('creating sample dataset for today');
       // Otherwise, create a new dataset for today
-      await (await dbPromise).add('days', {
-        date: $today,
-        data: [{ x: 'Sleep', y: 33 }],
-      });
+      const data = { date: $today, data: [] };
+      // Update the database
+      await (await dbPromise).add('days', data);
+      // And the current array
+      $days.push(data);
     }
     $days = $days;
   });

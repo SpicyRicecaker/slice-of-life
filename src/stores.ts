@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { openDB, deleteDB } from 'idb/with-async-ittr.js';
+import { openDB } from 'idb/with-async-ittr.js';
 
 // Chart!
 export const doughnut: any = writable({});

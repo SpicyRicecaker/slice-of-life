@@ -1,11 +1,20 @@
 <script lang="ts">
-  import { doughnut, days } from './stores';
+  import { doughnut, days, today} from './stores';
 
   const removeData = (i: number, j: number) => {
     $days[i].data.splice(j, 1);
     $days = $days;
     $doughnut.update();
   };
+
+  // Today len
+  let noPoint = false;
+  $: {
+    const l = $days.length;
+    if (l > 0) {
+      noPoint = $days[l-1].data.length === 0;
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -44,13 +53,16 @@
 </style>
 
 <div class="list">
+  {#if noPoint}
+    <div>No data for today, {$today.toLocaleString()}!</div>
+  {/if}
   {#each $days as day, i}
     {#each day.data as point, j}
-    <div class="list-item">
-      <span class="value">{point.y}%</span>
-      <span class="label">{point.x}</span>
-      <span class="remove" on:click={() => removeData(i, j)}>x</span>
-    </div>
+      <div class="list-item">
+        <span class="value">{point.y}%</span>
+        <span class="label">{point.x}</span>
+        <span class="remove" on:click={() => removeData(i, j)}>x</span>
+      </div>
     {/each}
   {/each}
 </div>
