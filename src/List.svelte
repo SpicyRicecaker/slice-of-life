@@ -34,6 +34,7 @@
     // Make every list item extend down
     display: flex;
     flex-direction: column;
+    overflow: auto;
   }
 
   .list-item {
@@ -65,7 +66,7 @@
 
   .value {
     // padding: 0.5rem;
-    justify-self: center;
+    justify-self: right;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 2rem;
     color: #2b2b2bb9;
@@ -110,9 +111,8 @@
   {#each $days as day, i}
     {#each day.data as point, j}
       <div class="list-item">
-        {#if point.y < 10}
-          <span class="value">0{point.y}%</span>
-        {:else}<span class="value">{point.y}%</span>{/if}
+        <span class="value">{point.y}<span
+            style="font-size: 1rem">%</span></span>
         <span class="label">{point.x}</span>
         <span class="extra">
           {#if point.dateModified}

@@ -23,3 +23,5 @@
   - Make set and push update db
   - Make db an object
     - More modular so we don't have to write it over and over
+
+<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
