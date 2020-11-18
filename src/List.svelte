@@ -37,13 +37,24 @@
   }
 
   .list-item {
-    // height: .5rem;
     padding: 0.5rem;
+    // Space out percentage, label, and other tags!
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 5fr) auto;
+    align-items: baseline;
+    transition: 1s;
+    gap: 1rem;
     &:hover {
+      background-color: #f1c23250;
       cursor: default;
+
       & .remove {
-        display: inline-block;
+        opacity: 1;
         cursor: pointer;
+      }
+
+      & .extra {
+        opacity: 1;
       }
     }
     // Inspiration for separators from this site: https://codepen.io/equinusocio/pen/OqpBKJ
@@ -53,17 +64,42 @@
   }
 
   .value {
-    font-family: 'Courier New', Courier, monospace;
-    background-color: lightgray;
-    border-radius: 1px;
+    // padding: 0.5rem;
+    justify-self: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 2rem;
+    color: #2b2b2bb9;
+    // font-family: 'Courier New', Courier, monospace;
+    // background-color: ;
   }
 
   .label {
+    font-size: 1.2rem;
+  }
+
+  .extra {
+    display: flex;
+    flex-direction: row;
+    color: #2b2b2b40;
+    transition: 0.2s;
+    opacity: 0;
+    & *:not(:last-child) {
+      flex: 1;
+    }
   }
 
   .remove {
-    color: tomato;
-    display: none;
+    user-select: none;
+    align-self: center;
+    // font-size: 1.5rem;
+    padding: 0.5rem;
+
+    transition: 0.2s;
+
+    opacity: 0;
+    &:hover {
+      // background-color: #e0666699;
+    }
   }
 </style>
 
@@ -74,15 +110,32 @@
   {#each $days as day, i}
     {#each day.data as point, j}
       <div class="list-item">
-        <span class="value">{point.y}%</span>
+        {#if point.y < 10}
+          <span class="value">0{point.y}%</span>
+        {:else}<span class="value">{point.y}%</span>{/if}
         <span class="label">{point.x}</span>
-        {#if point.dateCreated}
-          <span class="label">{point.dateCreated.toLocaleTimeString()}</span>
-        {/if}
-        {#if point.dateModified}
-          <span class="label">{point.dateModified.toLocaleTimeString()}</span>
-        {/if}
-        <span class="remove" on:click={() => removeData(i, j)}>x</span>
+        <span class="extra">
+          {#if point.dateModified}
+            <span>Last Changed {point.dateModified.toLocaleTimeString()}</span>
+          {/if}
+        </span>
+        <span class="remove" on:click={() => removeData(i, j)}>
+          <svg
+            id="Hello"
+            height="1rem"
+            viewBox="0 0 512 512"
+            width="1rem"
+            xmlns="http://www.w3.org/2000/svg"><g>
+              <path
+                d="m256 452c8.284 0 15-6.716 15-15v-242c0-8.284-6.716-15-15-15s-15 6.716-15 15v242c0 8.284 6.716 15 15 15z" />
+              <path
+                d="m346 452c8.284 0 15-6.716 15-15v-242c0-8.284-6.716-15-15-15s-15 6.716-15 15v242c0 8.284 6.716 15 15 15z" />
+              <path
+                d="m166 452c8.284 0 15-6.716 15-15v-242c0-8.284-6.716-15-15-15s-15 6.716-15 15v242c0 8.284 6.716 15 15 15z" />
+              <path
+                d="m46 150h45v347c0 8.284 6.716 15 15 15h300c8.284 0 15-6.716 15-15v-347h45c8.284 0 15-6.716 15-15s-6.716-15-15-15h-15v-45c0-8.284-6.716-15-15-15h-105v-45c0-8.284-6.716-15-15-15h-120c-8.284 0-15 6.716-15 15v45h-105c-8.284 0-15 6.716-15 15v45h-15c-8.284 0-15 6.716-15 15s6.716 15 15 15zm345 332h-270v-332h270zm-180-452h90v30h-90zm-120 60h330v30h-330z" />
+            </g></svg>
+        </span>
       </div>
     {/each}
   {/each}
