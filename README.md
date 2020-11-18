@@ -1,19 +1,23 @@
 # Slice of Life
-- "Never have a 0% day"
+  - "Never have a 0% day"
 
 # Daily Use Required
-  - Display time that something was created on hover in List.svelte
-  - Ability to edit list items
-  - Cleaner UI
-    - Formatted percentages
-    - X on far right
-    - Boxed list item
-    - Date
-    - Animations
-# Candy
   - Color palette generator for doughnut
+    - Given a number x, as well as a color scheme made up of 3 colors, return x colors spaced equally in the color scheme. 
+    - Really important because without colors a pie chart is practically useless
+
+  - Ability to edit list items
+    - On div click, spawn textarea, listen for changes. We'll probably need to make input checker more modular.
+      - If input is correct, animate a green wave and update value
+      - If input is incorrect, animate a red wave and cancel change
+
+# Candy
+  - Sort by value
+    - Have option to sort by date and value
+    - Need to open a value index
   - Have some sort of data backup
-    - Github OAuth
+    - Github OAuth?
+  
   
 # Icing
   - Yearly time use as dynamic square grid
