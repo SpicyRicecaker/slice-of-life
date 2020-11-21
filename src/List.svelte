@@ -42,7 +42,7 @@
     // Space out percentage, label, and other tags!
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 5fr) auto;
-    align-items: baseline;
+    // align-items: baseline;
     transition: 1s;
     gap: 1rem;
     &:hover {
@@ -72,35 +72,38 @@
     color: #2b2b2bb9;
     // font-family: 'Courier New', Courier, monospace;
     // background-color: ;
+    align-self: baseline;
   }
 
   .label {
     font-size: 1.2rem;
+    align-self: center;
   }
 
   .extra {
+    align-self: center;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     color: #2b2b2b40;
     transition: 0.2s;
     opacity: 0;
-    & *:not(:last-child) {
+    & * {
       flex: 1;
     }
+    // & *:not(:last-child) {
+    //   flex: 1;
+    // }
   }
 
   .remove {
     user-select: none;
-    align-self: center;
-    // font-size: 1.5rem;
     padding: 0.5rem;
-
     transition: 0.2s;
-
     opacity: 0;
-    &:hover {
-      // background-color: #e0666699;
-    }
+    align-self: center;
+    // &:hover {
+    // background-color: #e0666699;
+    // }
   }
 </style>
 
@@ -115,8 +118,15 @@
             style="font-size: 1rem">%</span></span>
         <span class="label">{point.x}</span>
         <span class="extra">
-          {#if point.dateModified}
-            <span>Last Changed {point.dateModified.toLocaleTimeString()}</span>
+          <div>
+            <span
+              style="color: #93c47d40">&bull;</span>{point.dateCreated.toLocaleTimeString()}
+          </div>
+          {#if point.dateModified !== point.dateCreated}
+            <div>
+              <span
+                style="color: #e0666640">&bull;</span>{point.dateModified.toLocaleTimeString()}
+            </div>
           {/if}
         </span>
         <span class="remove" on:click={() => removeData(i, j)}>

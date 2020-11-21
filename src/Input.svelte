@@ -25,19 +25,20 @@
         for (let j = 0; j < $days[i].data.length; ++j) {
           // if it matches, just add to that obj
           if ($days[i].data[j].x.match(new RegExp(label, 'i'))) {
+            let t = new Date();
             // Update array
             $days[i].data[j].y += parseInt(value);
+            $days[i].data[j].dateModified = t;
             noMatch = !noMatch;
             // Update database
             const dateCursor = await daysDb.getCursorFromDateRange(
               $todayPre,
               $todayPost
             );
-            // Update it
             for await (const date of dateCursor) {
-              console.log(date.value.data[j]);
               date.value.data[j].y += parseInt(value);
-              console.log(date.value.data[j]);
+              date.value.data[j].dateModified = t;
+              date.value.dateModified = t;
               dateCursor.update(date.value);
             }
             break;
@@ -48,12 +49,13 @@
       if (noMatch) {
         // Get day at today
         const dayToday = 0;
+        const t = new Date();
         // Otherwise just push values
         const newPoint: point = {
           x: label,
           y: parseInt(match[0]),
-          dateCreated: new Date(),
-          dateModified: new Date(),
+          dateCreated: t,
+          dateModified: t,
         };
 
         $days[dayToday].data.push(newPoint);
@@ -65,6 +67,7 @@
         // Update it
         for await (const date of dateCursor) {
           date.value.data.push(newPoint);
+          date.value.dateModified = t;
           dateCursor.update(date.value);
         }
       }
@@ -99,7 +102,7 @@
     justify-items: stretch;
     grid-template-columns: minmax(0, 5fr) minmax(0, 1fr);
     border: 1px solid #2b2b2b40;
-    // border-radius:1rem; 
+    // border-radius:1rem;
     margin: 0;
   }
 

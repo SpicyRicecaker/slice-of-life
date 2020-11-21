@@ -1,0 +1,17 @@
+language: node_js
+node_js: 15.0.1
+cache: yarn
+
+install:
+  - yarn install
+
+script:
+  - yarn dist
+    
+deploy: 
+  provider: releases
+  file: dist/*.exe
+  github-token: $GITHUB_TOKEN
+  skip_cleanup: true
+  on:
+    tags: true

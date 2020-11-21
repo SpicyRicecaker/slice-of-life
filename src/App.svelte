@@ -4,6 +4,7 @@
   import List from './List.svelte';
   import Save from './Save.svelte';
   import Date from './Date.svelte';
+  import Modified from './Modified.svelte';
 </script>
 
 <style lang="scss">
@@ -46,6 +47,11 @@
     justify-items: stretch;
     align-items: stretch;
   }
+  
+  .other {
+    grid-area: other;
+    padding: 1rem;
+  }
 
   @media (max-width: 991px) {
     main {
@@ -57,7 +63,10 @@
 
 <main>
   <div class="header">
-    <Date/>
+    <Date />
+  </div>
+  <div class="other">
+    <Modified />
   </div>
   <div class="chart-container">
     <Chart />
@@ -67,5 +76,4 @@
     <List />
     <Save />
   </div>
-  <!-- <div class="header" /> -->
 </main>

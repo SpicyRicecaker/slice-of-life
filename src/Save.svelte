@@ -11,14 +11,18 @@
 
     // If so, load data
     if (dateCursor) {
-      console.log('loading data');
       for await (const date of dateCursor) {
         $days.push(date.value);
       }
     } else {
-      console.log('creating sample dataset for today');
+      const t = new Date();
       // Otherwise, create a new dataset for today
-      const data = { date: currDate, data: [] };
+      const data = {
+        date: currDate,
+        dateCreated: t,
+        dateModified: t,
+        data: [],
+      };
       // Update the database
       await daysDb.insertObjectInDatabase(data);
       // And the current array
@@ -31,24 +35,36 @@
     pullData($today);
   }
 
-  // Load all things from db
-  // onMount(async () => pullData($today));
-
   // Write to appdata
-  const saveData = () => {};
+  // const saveData = () => {};
 
-  const loadData = () => {};
+  const updateStuff = async () => {
+    const dateCursor = await daysDb.getCursorFromDateRange(
+      $todayPre,
+      $todayPost
+    );
+    for await (const date of dateCursor) {
+      date.value["dateCreated"] = new Date();
+      date.value["dateModified"] = new Date();
+      dateCursor.update(date.value);
+    }
+  };
 
   const destroyData = async () => {
-    let transaction1 = await (await daysDb.getDb()).transaction('days', 'readwrite');
-    // First clear store
-    let daysStore = await (await transaction1).objectStore('days');
-    await daysStore.clear();
+    // Update database
+    const dateCursor = await daysDb.getCursorFromDateRange(
+      $todayPre,
+      $todayPost
+    );
+    for await (const date of dateCursor) {
+      date.delete();
+    }
     // Then clear out main array
     $days = [];
   };
 </script>
 
 <!-- <button on:click={saveData}>Save</button>
-<button on:click={loadData}>Load</button> -->
-<!-- <button on:click={destroyData}>[Debug] Destroy</button> -->
+<!-- <!-- <button on:click={saveData}>Save</button> -->
+<!-- <button on:click={updateStuff}>Update Stuff</button>
+<button on:click={destroyData}>[Debug] Clear Today</button> -->

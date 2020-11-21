@@ -13,6 +13,8 @@ interface point {
 }
 interface day {
   date: Date;
+  dateCreated: Date;
+  dateModified: Date;
   data: point[];
 }
 
