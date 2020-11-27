@@ -16,7 +16,6 @@
       for await (const date of dateCursor) {
         $days.push(date.value);
       }
-      console.log($days);
     } else {
       const t = new Date();
       // Otherwise, create a new dataset for today
