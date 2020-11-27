@@ -35,14 +35,13 @@ function serve() {
 
 export default {
   input: 'src/main.ts',
-  external: ['fs'],
+  external: ['fs', 'electron'],
   output: {
     sourcemap: true,
     format: 'cjs',
     exports: 'default',
     name: 'app',
     file: 'public/build/bundle.js',
-    globals: ['fs']
   },
   plugins: [
     svelte({

@@ -58,7 +58,16 @@ class db {
       .objectStore('days')
       .index('date');
     // Is there a dataset with todays date?
-    return await dateIdx.openCursor(IDBKeyRange.bound(dateBeg, dateEnd));
+    return dateIdx.openCursor(IDBKeyRange.bound(dateBeg, dateEnd));
+  };
+  // Gets cursor of the entire db
+  getCursor = async () => {
+    const dateIdx = await (await this.db)
+      .transaction('days', 'readwrite')
+      .objectStore('days')
+      .index('date');
+    // Is there a dataset with todays date?
+    return dateIdx.openCursor();
   };
   insertObjectInCursor = async (cursor: any, obj: any) => {
     for await (const date of cursor) {

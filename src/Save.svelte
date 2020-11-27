@@ -1,6 +1,7 @@
 <script lang="ts">
   import { daysDb, days, today, todayPre, todayPost } from './stores';
   import { promises as fs } from 'fs';
+  import { ipcRenderer } from 'electron';
 
   const pullData = async (currDate: Date) => {
     $days = [];
@@ -65,7 +66,28 @@
   };
 
   const exportData = async () => {
-    await fs.writeFile('123', '123');
+    const cursor = await daysDb.getCursor();
+    const obj = [];
+
+    for await (const point of cursor) {
+      obj.push(point.value);
+    }
+
+    const filePath = await ipcRenderer.invoke('showSaveDialog', {
+      title: 'Save File',
+      buttonLabel: 'Save File',
+      filters: [
+        {
+          name: 'Javascript Object Notation',
+          extensions: ['json'],
+        },
+      ],
+    });
+    if (!filePath.canceled) {
+      fs.writeFile(filePath.filePath, await JSON.stringify(obj));
+    } else {
+      console.log('You canceled the prompt !!');
+    }
   };
 </script>
 

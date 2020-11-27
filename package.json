@@ -26,6 +26,7 @@
     "dev": "concurrently -k \"yarn:dev-*\"",
     "dev-svelte": "rollup -c -w",
     "dev-electron": "electron .",
+    "dev-main": "tsc -w main.ts",
     "start": "sirv public",
     "validate": "svelte-check"
   },
