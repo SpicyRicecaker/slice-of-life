@@ -41,3 +41,8 @@ ipcMain.handle('showSaveDialog', async (event, options) => {
   //do something with args
   return dialog.showSaveDialog(options);
 });
+
+ipcMain.handle('showOpenDialog', async (event, options) => {
+  //do something with args
+  return dialog.showOpenDialog(options);
+});

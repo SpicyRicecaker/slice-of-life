@@ -65,10 +65,14 @@ class db {
     const dateIdx = await (await this.db)
       .transaction('days', 'readwrite')
       .objectStore('days')
-      .index('date');
     // Is there a dataset with todays date?
     return dateIdx.openCursor();
   };
+  // *Clears* database
+  clear = async (store: string) => {
+    const daysStore = await (await this.db).transaction(store, 'readwrite').objectStore(store);
+    daysStore.clear();
+  }
   insertObjectInCursor = async (cursor: any, obj: any) => {
     for await (const date of cursor) {
       date.value.data.push(obj);

@@ -75,3 +75,9 @@ electron_1.ipcMain.handle('showSaveDialog', function (event, options) { return _
         return [2 /*return*/, electron_2.dialog.showSaveDialog(options)];
     });
 }); });
+electron_1.ipcMain.handle('showOpenDialog', function (event, options) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        //do something with args
+        return [2 /*return*/, electron_2.dialog.showOpenDialog(options)];
+    });
+}); });
