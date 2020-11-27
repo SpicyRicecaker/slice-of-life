@@ -1,5 +1,6 @@
 <script lang="ts">
   import { daysDb, days, today, todayPre, todayPost } from './stores';
+  import { promises as fs } from 'fs';
 
   const pullData = async (currDate: Date) => {
     $days = [];
@@ -44,8 +45,8 @@
       $todayPost
     );
     for await (const date of dateCursor) {
-      date.value["dateCreated"] = new Date();
-      date.value["dateModified"] = new Date();
+      date.value['dateCreated'] = new Date();
+      date.value['dateModified'] = new Date();
       dateCursor.update(date.value);
     }
   };
@@ -62,9 +63,14 @@
     // Then clear out main array
     $days = [];
   };
+
+  const exportData = async () => {
+    await fs.writeFile('123', '123');
+  };
 </script>
 
 <!-- <button on:click={saveData}>Save</button>
 <!-- <!-- <button on:click={saveData}>Save</button> -->
 <!-- <button on:click={updateStuff}>Update Stuff</button>
 <button on:click={destroyData}>[Debug] Clear Today</button> -->
+<button on:click={exportData}>Export</button>
