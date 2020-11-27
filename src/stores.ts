@@ -24,13 +24,14 @@ export const options = writable({});
 // Labels for chart
 export const labels = writable(['One', 'Two', 'Three']);
 
-// Creating the DB
+// Create the DB
 class db {
   name;
   version;
   db;
+  // Db takes in name and version
   constructor(name, version) {
-    // Update the name and version with new
+    // Update the name and version with new values
     this.name = name;
     this.version = version;
 
@@ -50,6 +51,7 @@ class db {
       },
     });
   }
+  // REMOVE Return self (really shouldn't be a thing)
   getDb = async () => await this.db;
   // Finds today's date
   getCursorFromDateRange = async (dateBeg: Date, dateEnd: Date) => {
@@ -61,6 +63,7 @@ class db {
     return dateIdx.openCursor(IDBKeyRange.bound(dateBeg, dateEnd));
   };
   // Gets cursor of the entire db
+  // Keep in mind that this adds ID fields to all objects for some reason
   getCursor = async () => {
     const dateIdx = await (await this.db)
       .transaction('days', 'readwrite')
@@ -68,17 +71,20 @@ class db {
     // Is there a dataset with todays date?
     return dateIdx.openCursor();
   };
-  // *Clears* database
+  // DANGER Clears entire object store
   clear = async (store: string) => {
     const daysStore = await (await this.db).transaction(store, 'readwrite').objectStore(store);
     daysStore.clear();
   }
+  // Push object to found cursor...
+  // REMOVE The loop doesn't make sense
   insertObjectInCursor = async (cursor: any, obj: any) => {
     for await (const date of cursor) {
       date.value.data.push(obj);
       cursor.update(date.value);
     }
   };
+  // Puts one object in the database
   insertObjectInDatabase = async (obj) => {
     (await this.db).add('days', obj);
   };
