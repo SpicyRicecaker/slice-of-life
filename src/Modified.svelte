@@ -4,11 +4,13 @@
   // also keep in mind the null case for if the person has never modified anything
   let time: number;
   $: {
+    console.log('CHANGED');
     for (let i = 0; i < $days.length; ++i) {
       time = Math.floor(
-        (new Date().getTime() - $days[i].dateModified.getTime()) / 1000 / 60
+        (new Date().getTime() - $days[i].dateModified.getTime()) / 60000
       );
     }
+    console.log('TIME IS, ', time);
   }
 </script>
 

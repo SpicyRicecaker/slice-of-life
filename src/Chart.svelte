@@ -39,7 +39,16 @@
   // https://coolors.co/6699cc-fff275-ff8c42
   // https://coolors.co/483d3f-058ed9-f4ebd9
 
-  let chartParams = {
+  interface chartParameter {
+    type: string;
+    data: {
+      labels: string[];
+      datasets: number[];
+    };
+    options: {};
+  }
+
+  let chartParams: chartParameter = {
     type: 'doughnut',
     data: {
       labels: [],
@@ -49,9 +58,9 @@
   };
 
   onMount(async () => {
-    let ctx = (document.getElementById(
+    let ctx = ((document.getElementById(
       'myChart'
-    ) as HTMLCanvasElement).getContext('2d');
+    ) as HTMLCanvasElement).getContext('2d') as CanvasRenderingContext2D);
 
     $doughnut = new Chart(ctx, chartParams);
     mounted = true;

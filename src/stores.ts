@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import { openDB } from 'idb/with-async-ittr.js';
+import { IDBPCursorWithValue, IDBPDatabase, openDB } from 'idb/with-async-ittr.js';
 
 // Chart!
 export const doughnut: any = writable({});
@@ -26,11 +26,11 @@ export const labels = writable(['One', 'Two', 'Three']);
 
 // Create the DB
 class db {
-  name;
-  version;
-  db;
+  name: string;
+  version: number;
+  db: Promise<IDBPDatabase>;
   // Db takes in name and version
-  constructor(name, version) {
+  constructor(name: string, version: number) {
     // Update the name and version with new values
     this.name = name;
     this.version = version;
@@ -52,9 +52,9 @@ class db {
     });
   }
   // REMOVE Return self (really shouldn't be a thing)
-  getDb = async () => await this.db;
+  getDb = async ():Promise<IDBPDatabase> => this.db;
   // Finds today's date
-  getCursorFromDateRange = async (dateBeg: Date, dateEnd: Date) => {
+  getCursorFromDateRange = async (dateBeg: Date, dateEnd: Date): Promise<IDBPCursorWithValue<unknown, ["days"], "days", unknown> | null> => {
     const dateIdx = await (await this.db)
       .transaction('days', 'readwrite')
       .objectStore('days')
@@ -64,28 +64,30 @@ class db {
   };
   // Gets cursor of the entire db
   // Keep in mind that this adds ID fields to all objects for some reason
-  getCursor = async () => {
+  getCursor = async (): Promise<IDBPCursorWithValue<unknown, ["days"], "days", unknown> | null> => {
     const dateIdx = await (await this.db)
       .transaction('days', 'readwrite')
-      .objectStore('days')
+      .objectStore('days');
     // Is there a dataset with todays date?
     return dateIdx.openCursor();
   };
   // DANGER Clears entire object store
   clear = async (store: string) => {
-    const daysStore = await (await this.db).transaction(store, 'readwrite').objectStore(store);
+    const daysStore = await (await this.db)
+      .transaction(store, 'readwrite')
+      .objectStore(store);
     daysStore.clear();
-  }
+  };
   // Push object to found cursor...
   // REMOVE The loop doesn't make sense
-  insertObjectInCursor = async (cursor: any, obj: any) => {
+  insertObjectInCursor = async (cursor: any, obj: day) => {
     for await (const date of cursor) {
       date.value.data.push(obj);
       cursor.update(date.value);
     }
   };
   // Puts one object in the database
-  insertObjectInDatabase = async (obj) => {
+  insertObjectInDatabase = async (obj: day) => {
     (await this.db).add('days', obj);
   };
 }

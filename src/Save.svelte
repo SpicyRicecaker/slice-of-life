@@ -45,10 +45,12 @@
       $todayPre,
       $todayPost
     );
-    for await (const date of dateCursor) {
-      date.value['dateCreated'] = new Date();
-      date.value['dateModified'] = new Date();
-      dateCursor.update(date.value);
+    if (dateCursor !== null) {
+      for await (const date of dateCursor) {
+        date.value['dateCreated'] = new Date();
+        date.value['dateModified'] = new Date();
+        dateCursor.update(date.value);
+      }
     }
   };
 
@@ -58,35 +60,39 @@
       $todayPre,
       $todayPost
     );
-    for await (const date of dateCursor) {
-      date.delete();
+    if (dateCursor !== null) {
+      for await (const date of dateCursor) {
+        date.delete();
+      }
+      // Then clear out main array
+      $days = [];
     }
-    // Then clear out main array
-    $days = [];
   };
 
   const exportData = async () => {
     const cursor = await daysDb.getCursor();
     const obj = [];
 
-    for await (const point of cursor) {
-      obj.push(point.value);
-    }
+    if (cursor !== null) {
+      for await (const point of cursor) {
+        obj.push(point.value);
+      }
 
-    const filePath = await ipcRenderer.invoke('showSaveDialog', {
-      title: 'Save Data',
-      buttonLabel: 'Save',
-      filters: [
-        {
-          name: 'Javascript Object Notation',
-          extensions: ['json'],
-        },
-      ],
-    });
-    if (!filePath.canceled) {
-      fs.writeFile(filePath.filePath, await JSON.stringify(obj));
-    } else {
-      console.log('You canceled the prompt !!');
+      const filePath = await ipcRenderer.invoke('showSaveDialog', {
+        title: 'Save Data',
+        buttonLabel: 'Save',
+        filters: [
+          {
+            name: 'Javascript Object Notation',
+            extensions: ['json'],
+          },
+        ],
+      });
+      if (!filePath.canceled) {
+        fs.writeFile(filePath.filePath, await JSON.stringify(obj));
+      } else {
+        console.log('You canceled the prompt !!');
+      }
     }
   };
 

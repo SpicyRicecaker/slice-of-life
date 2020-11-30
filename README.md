@@ -1,10 +1,22 @@
 # Slice of Life
   - "Never have a 0% day"
 
+# Bug Fixes / Small Features
+  - Minimize on window close by default
+  - Have time since last opt update instantly on change
+  - Fix legends making the pie chart smaller
 # Daily Use Required
+  - "Change tab"
+    - Change is effectively useless if you can't measure how effective it is
+    - Make it possible for
+      - Noting observations
+      - Then proposing reasons for change based off those observations
+      - Most importantly MEASURING the difference in QOL, objectively
+
   - Color palette generator for doughnut
     - Given a number x, as well as a color scheme made up of 3 colors, return x colors spaced equally in the color scheme. 
     - Really important because without colors a pie chart is practically useless
+    - Have colors of wheel tied to list
 
   - Ability to edit list items
     - On div click, spawn textarea, listen for changes. We'll probably need to make input checker more modular.
