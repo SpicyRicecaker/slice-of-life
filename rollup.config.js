@@ -35,7 +35,7 @@ function serve() {
 
 export default {
   input: 'src/main.ts',
-  external: ['fs', 'electron'],
+  external: ['fs', 'electron', 'path'],
   output: {
     sourcemap: true,
     format: 'cjs',

@@ -1,6 +1,6 @@
 {
   "name": "slice-of-life",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Your life in percentages",
   "main": "main.js",
   "build": {
@@ -22,11 +22,11 @@
   },
   "scripts": {
     "dist": "yarn build && electron-builder",
-    "build": "rollup -c && tsc main.ts",
+    "build": "rollup -c && tsc main --esModuleInterop",
     "dev": "concurrently -k \"yarn:dev-*\"",
     "dev-svelte": "rollup -c -w",
+    "dev-main": "tsc -w main.ts --esModuleInterop",
     "dev-electron": "electron .",
-    "dev-main": "tsc -w main.ts",
     "start": "sirv public",
     "validate": "svelte-check"
   },

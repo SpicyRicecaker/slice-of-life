@@ -18,71 +18,73 @@
     const label = inputLabel.substr(index + 1);
 
     const match = value.match(/(\d+)%/gi);
-    // If we get valid input
-    if (match && label !== '') {
-      // First check if we already have the label in the db
-      let noMatch = true;
-      // Lookup label
-      for (let i = 0; i < $days.length; ++i) {
-        for (let j = 0; j < $days[i].data.length; ++j) {
-          // if it matches, just add to that obj
-          if ($days[i].data[j].x.match(new RegExp(label, 'i'))) {
-            let t = new Date();
-            // Update array
-            $days[i].data[j].y += parseInt(value);
-            $days[i].data[j].dateModified = t;
-            noMatch = !noMatch;
-            // Update database
-            const dateCursor = await daysDb.getCursorFromDateRange(
-              $today.getMorning(),
-              $today.getNight()
-            );
-            if (dateCursor !== null) {
-              for await (const date of dateCursor) {
-                date.value.data[j].y += parseInt(value);
-                date.value.data[j].dateModified = t;
-                date.value.dateModified = t;
-                dateCursor.update(date.value);
-              }
-              break;
-            }
-          }
-        }
-      }
-      // If there is no match, then I guess we just have to push
-      if (noMatch) {
-        // Get day at today
-        const dayToday = 0;
-        const t = new Date();
-        // Otherwise just push values
-        const newPoint: point = {
-          x: label,
-          y: parseInt(match[0]),
-          dateCreated: t,
-          dateModified: t,
-        };
-
-        $days[dayToday].data.push(newPoint);
-
-        const dateCursor = await daysDb.getCursorFromDateRange(
-          $today.getMorning(),
-          $today.getNight()
-        );
-        // Update it
-        if (dateCursor !== null) {
-          for await (const date of dateCursor) {
-            date.value.data.push(newPoint);
-            date.value.dateModified = t;
-            dateCursor.update(date.value);
-          }
-        }
-      }
-      $days = $days;
-      // Update the graph
-      $doughnut.update();
-      // Clear the thing
-      inputLabel = '';
+    if (!(match && label !== '')) {
+      return;
     }
+    let blankPush = true;
+    // If we get valid input
+    // First check if we already have the label in the db
+    // Lookup label
+    for (let i = 0; i < $days.length; ++i) {
+      for (let j = 0; j < $days[i].data.length; ++j) {
+        // if it matches, just add to that obj
+        if ($days[i].data[j].x.match(new RegExp(label, 'i'))) {
+          blankPush = !blankPush;
+          let t = new Date();
+          // Update array
+          $days[i].data[j].y += parseInt(value);
+          $days[i].data[j].dateModified = t;
+          // Update database
+          const dateCursor = await daysDb.getCursorFromDateRange(
+            $today.getMorning(),
+            $today.getNight()
+          );
+          if (dateCursor !== null) {
+            for await (const date of dateCursor) {
+              date.value.data[j].y += parseInt(value);
+              date.value.data[j].dateModified = t;
+              date.value.dateModified = t;
+              dateCursor.update(date.value);
+            }
+            break;
+          }
+        }
+      }
+    }
+    if (blankPush) {
+      // If there is no match, then I guess we just have to push
+      // Get day at today
+      const t = new Date();
+      // Otherwise just push values
+      const newPoint: point = {
+        x: label,
+        y: parseInt(match[0] as string),
+        dateCreated: t,
+        dateModified: t,
+      };
+
+      $days[0].dateModified = t;
+      $days[0].data.push(newPoint);
+
+      const dateCursor = await daysDb.getCursorFromDateRange(
+        $today.getMorning(),
+        $today.getNight()
+      );
+      // Update it
+      if (dateCursor !== null) {
+        for await (const date of dateCursor) {
+          date.value.data.push(newPoint);
+          date.value.dateModified = t;
+          dateCursor.update(date.value);
+        }
+      }
+    }
+
+    $days = $days;
+    // Update the graph
+    $doughnut.update();
+    // Clear the thing
+    inputLabel = '';
   };
 
   const handleKey = (e: KeyboardEvent) => {

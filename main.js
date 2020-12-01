@@ -35,8 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var electron_1 = require("electron");
+var path_1 = __importDefault(require("path"));
 var createWindow = function () {
     var _a = electron_1.screen.getPrimaryDisplay().workAreaSize, width = _a.width, height = _a.height;
     var win = new electron_1.BrowserWindow({
@@ -49,6 +53,42 @@ var createWindow = function () {
     });
     win.loadFile('public/index.html');
     win.webContents.openDevTools();
+    // Answer from https://stackoverflow.com/questions/35008347/electron-close-w-x-vs-right-click-dock-and-quit
+    var forceQuit = false;
+    electron_1.app.on('before-quit', function () {
+        forceQuit = true;
+    });
+    win.on('close', function (event) {
+        if (!forceQuit) {
+            event.preventDefault();
+            win.hide();
+        }
+    });
+    var tray;
+    // Code inspired by https://stackoverflow.com/questions/37828758/electron-js-how-to-minimize-close-window-to-system-tray-and-restore-window-back
+    var createTray = function () {
+        tray = new electron_1.Tray(path_1["default"].join(path_1["default"].resolve(), 'public', 'icon.png'));
+        var contextMenu = electron_1.Menu.buildFromTemplate([
+            {
+                label: 'Show',
+                click: function () {
+                    win.show();
+                }
+            },
+            {
+                label: 'Quit',
+                click: function () {
+                    electron_1.app.exit();
+                }
+            },
+        ]);
+        tray.on('click', function () {
+            win.show();
+        });
+        tray.setToolTip('Slice');
+        tray.setContextMenu(contextMenu);
+    };
+    createTray();
 };
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -67,7 +107,7 @@ electron_1.app.whenReady().then(function () {
             createWindow();
     });
 });
-// Other stuff here
+// IPC Handles
 var electron_2 = require("electron");
 electron_1.ipcMain.handle('showSaveDialog', function (event, options) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {

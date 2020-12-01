@@ -1,4 +1,5 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, Tray, Menu } from 'electron';
+import path from 'path';
 
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -13,6 +14,45 @@ const createWindow = () => {
 
   win.loadFile('public/index.html');
   win.webContents.openDevTools();
+
+  // Answer from https://stackoverflow.com/questions/35008347/electron-close-w-x-vs-right-click-dock-and-quit
+  let forceQuit = false;
+  app.on('before-quit', () => {
+    forceQuit = true;
+  });
+
+  win.on('close', (event: Event) => {
+    if (!forceQuit) {
+      event.preventDefault();
+      win.hide();
+    }
+  });
+
+  let tray: Tray;
+  // Code inspired by https://stackoverflow.com/questions/37828758/electron-js-how-to-minimize-close-window-to-system-tray-and-restore-window-back
+  const createTray = () => {
+    tray = new Tray(path.join(path.resolve(), 'public', 'icon.png'));
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Show',
+        click: () => {
+          win.show();
+        },
+      },
+      {
+        label: 'Quit',
+        click: () => {
+          app.exit();
+        },
+      },
+    ]);
+    tray.on('click', () => {
+      win.show();
+    });
+    tray.setToolTip('Slice');
+    tray.setContextMenu(contextMenu);
+  };
+  createTray();
 };
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -26,7 +66,6 @@ app.on('window-all-closed', () => {
 
 app.whenReady().then(() => {
   createWindow();
-
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -34,8 +73,7 @@ app.whenReady().then(() => {
   });
 });
 
-
-// Other stuff here
+// IPC Handles
 import { dialog } from 'electron';
 ipcMain.handle('showSaveDialog', async (event, options) => {
   //do something with args

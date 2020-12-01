@@ -16,7 +16,7 @@
     // Loop through array of days
     for (let dayN = 0; dayN < $days.length; dayN++) {
       // Loop through that days data
-      const percentages:number[] = [];
+      const percentages: number[] = [];
 
       for (let dataN = 0; dataN < $days[dayN].data.length; ++dataN) {
         // Append labels of the day to labels

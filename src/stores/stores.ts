@@ -5,7 +5,11 @@ import type { Day } from '../typings/types';
 export const doughnut: any = writable({});
 
 // Options for chart
-export const options = writable({});
+export const options = writable({
+  legend: {
+    display: false,
+  },
+});
 
 // Labels for chart
 export const labels = writable(['One', 'Two', 'Three']);

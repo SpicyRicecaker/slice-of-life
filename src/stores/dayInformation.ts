@@ -1,5 +1,4 @@
-import type { Day } from '../typings/types';
-import { writable, derived } from 'svelte/store';
+import { writable, readable } from 'svelte/store';
 
 class dayInformation {
   today: Date;
@@ -9,14 +8,22 @@ class dayInformation {
     this.today = new Date();
     this.morning = dayInformation.getBeginning(this.today);
     this.night = dayInformation.getEnd(this.today);
+    // this.increment();
   }
   // Static methods for getting the initial and end of each day
-  static getBeginning = (date: Date): Date =>
-    new Date(date.setHours(0, 0, 0, 0));
-  static getEnd = (date: Date): Date =>
-    new Date(date.setHours(23, 59, 59, 999));
+  static getBeginning = (date: Date): Date => {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  };
+
+  static getEnd = (date: Date): Date => {
+    const d = new Date(date);
+    d.setHours(23, 59, 59, 999);
+    return d;
+  };
   // Update morning and night each day
-  update = () => {
+  updateTimes = () => {
     this.morning = dayInformation.getBeginning(this.today);
     this.night = dayInformation.getEnd(this.today);
   };
@@ -27,22 +34,24 @@ class dayInformation {
   // Setter for today
   setToday = (today: Date) => {
     this.today = today;
-    this.update();
+    this.updateTimes();
   };
   setTodayDay = (date: number) => {
     this.today.setDate(date);
-    this.update();
-  }
+    this.updateTimes();
+  };
+  // increment = () => {
+  //   console.log('calling increment bb');
+  //   this.setToday(new Date());
+  //   setTimeout(this.increment, 1000);
+  // };
 }
 export const today = writable(new dayInformation());
 
-// export const today = writable(new Date());
-// export const todayPre = derived(
-//   today,
-//   ($today) => new Date(getBeginning($today))
-// );
-// export const todayPost = derived(today, ($today) => new Date(getEnd($today)));
-
-// Create the data array
-//
-// const initStuff: Day[] = [];
+export const time = readable(new Date(), (set) => {
+  const loop = () => {
+    set(new Date());
+    setTimeout(loop, 60000);
+  };
+  loop();
+});

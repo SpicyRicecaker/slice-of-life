@@ -1,15 +1,18 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
 
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "main.ts"],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
   "compilerOptions": {
+    // Our usual options
     "target": "esnext",
+    "module": "esnext",
     "sourceMap": true,
-    "typeRoots": ["node_modules/@types"], // "typeRoots": [] -> won't work
-    "types": ["svelte", "node"],
     "strict": true,
     "noImplicitReturns": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    // Custom things that we need for svelte
+    "typeRoots": ["node_modules/@types"], // "typeRoots": [] -> won't work
+    "types": ["svelte", "node"]
   }
 }
