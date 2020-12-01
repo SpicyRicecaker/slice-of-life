@@ -1,11 +1,20 @@
 {
   "name": "slice-of-life",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Your life in percentages",
   "main": "main.js",
   "build": {
     "appId": "io.github.spicyricecaker.app",
     "productName": "Slice of Life",
+    "extraFiles": [
+      {
+        "from": "src/images",
+        "to": "resources",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
     "directories": {
       "buildResources": "src/images"
     },

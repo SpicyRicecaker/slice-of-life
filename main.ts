@@ -31,7 +31,10 @@ const createWindow = () => {
   let tray: Tray;
   // Code inspired by https://stackoverflow.com/questions/37828758/electron-js-how-to-minimize-close-window-to-system-tray-and-restore-window-back
   const createTray = () => {
-    tray = new Tray(path.join(path.resolve(), 'public', 'icon.png'));
+    let imgPath = app.isPackaged
+      ? path.join(process.resourcesPath, 'icon.png')
+      : path.join(path.resolve(), 'src', 'images', 'icon.png');
+    tray = new Tray(imgPath);
     const contextMenu = Menu.buildFromTemplate([
       {
         label: 'Show',

@@ -67,7 +67,10 @@ var createWindow = function () {
     var tray;
     // Code inspired by https://stackoverflow.com/questions/37828758/electron-js-how-to-minimize-close-window-to-system-tray-and-restore-window-back
     var createTray = function () {
-        tray = new electron_1.Tray(path_1["default"].join(path_1["default"].resolve(), 'public', 'icon.png'));
+        var imgPath = electron_1.app.isPackaged
+            ? path_1["default"].join(process.resourcesPath, 'icon.png')
+            : path_1["default"].join(path_1["default"].resolve(), 'src', 'images', 'icon.png');
+        tray = new electron_1.Tray(imgPath);
         var contextMenu = electron_1.Menu.buildFromTemplate([
             {
                 label: 'Show',
