@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { daysDb, days, today, todayPre, todayPost } from './stores';
+  import { days } from './stores/stores';
+  import { today } from './stores/dayInformation';
+  import { daysDb } from './stores/database';
   import { promises as fs } from 'fs';
   import { ipcRenderer } from 'electron';
 
@@ -7,8 +9,8 @@
     $days = [];
     // Get date index
     const dateCursor = await daysDb.getCursorFromDateRange(
-      $todayPre,
-      $todayPost
+      $today.getMorning(),
+      $today.getNight()
     );
 
     // If so, load data
@@ -34,7 +36,7 @@
   };
 
   $: {
-    pullData($today);
+    pullData($today.getToday());
   }
 
   // Write to appdata
@@ -42,8 +44,8 @@
 
   const updateStuff = async () => {
     const dateCursor = await daysDb.getCursorFromDateRange(
-      $todayPre,
-      $todayPost
+      $today.getMorning(),
+      $today.getNight()
     );
     if (dateCursor !== null) {
       for await (const date of dateCursor) {
@@ -57,8 +59,8 @@
   const destroyData = async () => {
     // Update database
     const dateCursor = await daysDb.getCursorFromDateRange(
-      $todayPre,
-      $todayPost
+      $today.getMorning(),
+      $today.getNight()
     );
     if (dateCursor !== null) {
       for await (const date of dateCursor) {

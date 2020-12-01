@@ -1,29 +1,5 @@
-import { writable, derived } from 'svelte/store';
 import { IDBPCursorWithValue, IDBPDatabase, openDB } from 'idb/with-async-ittr.js';
-
-// Chart!
-export const doughnut: any = writable({});
-
-// Data for chart
-interface point {
-  x: string;
-  y: number;
-  dateCreated: Date;
-  dateModified: Date;
-}
-interface day {
-  date: Date;
-  dateCreated: Date;
-  dateModified: Date;
-  data: point[];
-}
-
-// Options for chart
-export const options = writable({});
-
-// Labels for chart
-export const labels = writable(['One', 'Two', 'Three']);
-
+import type { Day } from '../typings/types';
 // Create the DB
 class db {
   name: string;
@@ -80,45 +56,15 @@ class db {
   };
   // Push object to found cursor...
   // REMOVE The loop doesn't make sense
-  insertObjectInCursor = async (cursor: any, obj: day) => {
+  insertObjectInCursor = async (cursor: any, obj: Day) => {
     for await (const date of cursor) {
       date.value.data.push(obj);
       cursor.update(date.value);
     }
   };
   // Puts one object in the database
-  insertObjectInDatabase = async (obj: day) => {
+  insertObjectInDatabase = async (obj: Day) => {
     (await this.db).add('days', obj);
   };
 }
 export const daysDb = new db('days-store', 1);
-
-const initStuff: day[] = [];
-
-const getBeginning = (date: Date) => date.setHours(0, 0, 0, 0);
-const getEnd = (date: Date) => date.setHours(23, 59, 59, 999);
-
-export const today = writable(new Date());
-export const todayPre = derived(
-  today,
-  ($today) => new Date(getBeginning($today))
-);
-export const todayPost = derived(today, ($today) => new Date(getEnd($today)));
-
-// Create the data array
-const createDays = (initStuff: day[]) => {
-  const { subscribe, set, update } = writable(initStuff);
-
-  return {
-    subscribe,
-    set,
-    splice: async (index: number) => {
-      // Clear the array, and the database at this specific date
-    },
-    push: async (day: day) => {
-      //
-    },
-  };
-};
-
-export const days = createDays(initStuff);

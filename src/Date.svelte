@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { today } from './stores';
+  import { today } from './stores/dayInformation';
 
-  $: formatDate = $today.toLocaleDateString();
+  $: formatDate = $today.getToday().toLocaleDateString();
 
   const changeDateByOne = (pm: number) => {
-    $today.setDate($today.getDate() + pm);
+    $today.setTodayDay($today.getToday().getDate() + pm);
     $today = $today;
   };
 </script>

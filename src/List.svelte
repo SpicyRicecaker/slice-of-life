@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { doughnut, days, today } from './stores';
-  import { daysDb, todayPre, todayPost } from './stores';
+  import { doughnut, days } from './stores/stores';
+  import { today } from './stores/dayInformation';
+  import { daysDb } from './stores/database';
 
   const removeData = async (i: number, j: number) => {
     $days[i].data.splice(j, 1);
@@ -8,13 +9,15 @@
     $doughnut.update();
 
     const dateCursor = await daysDb.getCursorFromDateRange(
-      $todayPre,
-      $todayPost
+      $today.getMorning(),
+      $today.getNight()
     );
     // Update it
-    for await (const date of dateCursor) {
-      date.value.data.splice(j, 1);
-      dateCursor.update(date.value);
+    if (dateCursor !== null) {
+      for await (const date of dateCursor) {
+        date.value.data.splice(j, 1);
+        dateCursor.update(date.value);
+      }
     }
   };
 

@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { doughnut, days, daysDb, todayPre, todayPost } from './stores';
+  import { doughnut, days } from './stores/stores';
+  import { daysDb } from './stores/database';
+  import { today } from './stores/dayInformation';
 
   interface point {
     x: string;
@@ -32,16 +34,18 @@
             noMatch = !noMatch;
             // Update database
             const dateCursor = await daysDb.getCursorFromDateRange(
-              $todayPre,
-              $todayPost
+              $today.getMorning(),
+              $today.getNight()
             );
-            for await (const date of dateCursor) {
-              date.value.data[j].y += parseInt(value);
-              date.value.data[j].dateModified = t;
-              date.value.dateModified = t;
-              dateCursor.update(date.value);
+            if (dateCursor !== null) {
+              for await (const date of dateCursor) {
+                date.value.data[j].y += parseInt(value);
+                date.value.data[j].dateModified = t;
+                date.value.dateModified = t;
+                dateCursor.update(date.value);
+              }
+              break;
             }
-            break;
           }
         }
       }
@@ -61,14 +65,16 @@
         $days[dayToday].data.push(newPoint);
 
         const dateCursor = await daysDb.getCursorFromDateRange(
-          $todayPre,
-          $todayPost
+          $today.getMorning(),
+          $today.getNight()
         );
         // Update it
-        for await (const date of dateCursor) {
-          date.value.data.push(newPoint);
-          date.value.dateModified = t;
-          dateCursor.update(date.value);
+        if (dateCursor !== null) {
+          for await (const date of dateCursor) {
+            date.value.data.push(newPoint);
+            date.value.dateModified = t;
+            dateCursor.update(date.value);
+          }
         }
       }
       $days = $days;

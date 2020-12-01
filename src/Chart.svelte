@@ -1,7 +1,7 @@
 <script lang="ts">
   import Chart from 'chart.js';
   import { onMount } from 'svelte';
-  import { doughnut, days, options } from './stores';
+  import { doughnut, days, options } from './stores/stores';
 
   let mounted = false;
 
@@ -16,20 +16,20 @@
     // Loop through array of days
     for (let dayN = 0; dayN < $days.length; dayN++) {
       // Loop through that days data
-      const tDay = {
-        label: `Day ${dayN}`,
-        data: [],
-        backgroundColor: palette,
-      };
+      const percentages:number[] = [];
 
       for (let dataN = 0; dataN < $days[dayN].data.length; ++dataN) {
         // Append labels of the day to labels
         chartParams.data.labels.push($days[dayN].data[dataN].x);
         // Append data of the day
-        tDay.data.push($days[dayN].data[dataN].y);
+        percentages.push($days[dayN].data[dataN].y);
       }
       // Push data to datasets
-      chartParams.data.datasets.push(tDay);
+      chartParams.data.datasets.push({
+        label: `Day ${dayN}`,
+        data: percentages,
+        backgroundColor: palette,
+      });
     }
 
     if (mounted) {
@@ -39,11 +39,17 @@
   // https://coolors.co/6699cc-fff275-ff8c42
   // https://coolors.co/483d3f-058ed9-f4ebd9
 
+  interface dataset {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+  }
+
   interface chartParameter {
     type: string;
     data: {
       labels: string[];
-      datasets: number[];
+      datasets: dataset[];
     };
     options: {};
   }
@@ -58,9 +64,9 @@
   };
 
   onMount(async () => {
-    let ctx = ((document.getElementById(
+    let ctx = (document.getElementById(
       'myChart'
-    ) as HTMLCanvasElement).getContext('2d') as CanvasRenderingContext2D);
+    ) as HTMLCanvasElement).getContext('2d') as CanvasRenderingContext2D;
 
     $doughnut = new Chart(ctx, chartParams);
     mounted = true;
