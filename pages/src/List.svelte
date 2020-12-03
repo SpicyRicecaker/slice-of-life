@@ -1,6 +1,6 @@
 <script lang="ts">
   import { doughnut, days } from './stores/stores';
-  import { today } from './stores/dayInformation';
+  import { today, time } from './stores/dayInformation';
   import { daysDb } from './stores/database';
 
   const removeData = async (i: number, j: number) => {
@@ -21,12 +21,12 @@
     }
   };
 
-  // Today len
-  let noPoint = false;
+  // If the length of data for today is nothing
+  let noData = false;
   $: {
     const l = $days.length;
     if (l > 0) {
-      noPoint = $days[l - 1].data.length === 0;
+      noData = $days[l - 1].data.length === 0;
     }
   }
 </script>
@@ -111,8 +111,8 @@
 </style>
 
 <div class="list">
-  {#if noPoint}
-    <div>No data for today, {$today.toLocaleString()}!</div>
+  {#if noData}
+    <div><span>No entries yet!</span> - <span style="color: gray;">Last modified checked at {$time.toLocaleString()}</span></div>
   {/if}
   {#each $days as day, i}
     {#each day.data as point, j}

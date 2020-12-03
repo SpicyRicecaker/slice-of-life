@@ -2,8 +2,9 @@
   - "Never have a 0% day"
 
 # Bug Fixes / Small Features
-  
-    
+- Persist dev console last opened or not
+- Sane defaults for 1080p and lower resolutions
+  - (Basically avoid flexbox)
 # Daily Use Required
   - Color palette generator for doughnut
     - Given a number x, as well as a color scheme made up of 3 colors, return x colors spaced equally in the color scheme. 

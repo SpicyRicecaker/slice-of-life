@@ -115,12 +115,14 @@
   }
 
   #data-input {
+    margin: 0;
     border-radius: 0;
     border: none;
     outline: none;
   }
 
   #add-button {
+    margin: 0;
     border-radius: 0;
     border: none;
     outline: none;

@@ -1,13 +1,13 @@
 import { writable, readable } from 'svelte/store';
 
-class dayInformation {
+class DayInformation {
   today: Date;
   morning: Date;
   night: Date;
   constructor() {
     this.today = new Date();
-    this.morning = dayInformation.getBeginning(this.today);
-    this.night = dayInformation.getEnd(this.today);
+    this.morning = DayInformation.getBeginning(this.today);
+    this.night = DayInformation.getEnd(this.today);
     // this.increment();
   }
   // Static methods for getting the initial and end of each day
@@ -23,20 +23,20 @@ class dayInformation {
     return d;
   };
   // Update morning and night each day
-  updateTimes = () => {
-    this.morning = dayInformation.getBeginning(this.today);
-    this.night = dayInformation.getEnd(this.today);
+  updateTimes = (): void => {
+    this.morning = DayInformation.getBeginning(this.today);
+    this.night = DayInformation.getEnd(this.today);
   };
   // Getters for all 3
   getToday = (): Date => this.today;
   getMorning = (): Date => this.morning;
   getNight = (): Date => this.night;
   // Setter for today
-  setToday = (today: Date) => {
+  setToday = (today: Date): void => {
     this.today = today;
     this.updateTimes();
   };
-  setTodayDay = (date: number) => {
+  setTodayDay = (date: number): void => {
     this.today.setDate(date);
     this.updateTimes();
   };
@@ -46,10 +46,10 @@ class dayInformation {
   //   setTimeout(this.increment, 1000);
   // };
 }
-export const today = writable(new dayInformation());
+export const today = writable(new DayInformation());
 
 export const time = readable(new Date(), (set) => {
-  const loop = () => {
+  const loop = (): void => {
     set(new Date());
     setTimeout(loop, 60000);
   };

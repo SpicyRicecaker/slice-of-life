@@ -24,6 +24,8 @@
       'header other' 3rem
       'chart info' minmax(0, 10fr)
       / minmax(0, 1fr) minmax(0, 1fr);
+    // Make it more native, we can turn it on later if needed
+    user-select: none;
   }
 
   .chart-container {
@@ -47,7 +49,7 @@
     justify-items: stretch;
     align-items: stretch;
   }
-  
+
   .other {
     grid-area: other;
     padding: 1rem;
