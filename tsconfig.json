@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "allowJs": true,
     "module": "commonjs",
@@ -15,4 +16,22 @@
   "include": [
     "src/**/*"
   ]
+=======
+  "extends": "@tsconfig/svelte/tsconfig.json",
+
+  "include": ["src/**/*", "main.ts"],
+  "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
+  "compilerOptions": {
+    // Our usual options
+    "target": "esnext",
+    "module": "esnext",
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    // Custom things that we need for svelte
+    "typeRoots": ["node_modules/@types"], // "typeRoots": [] -> won't work
+    "types": ["svelte", "node"]
+  }
+>>>>>>> 31897a8ac8b7f9839e180cd0d63ec5d43e66f30d
 }
