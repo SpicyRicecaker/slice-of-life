@@ -9,7 +9,7 @@
   "description": "Visualizer for time spent in a day using chart.js",
   "main": "dist/index.js",
   "scripts": {
-    "dev":"concurrently \"yarn:start\" \"lerna run start\"",
+    "dev": "concurrently \"yarn:start\" \"lerna run start\"",
     "start": "tsc && electron-forge start",
     "package": "lerna run build && tsc && electron-forge package",
     "make": "lerna run build && tsc && electron-forge make",
@@ -24,12 +24,18 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "pages/public/assets/icon.ico",
+        "extraResource": "pages/public/assets/icon.ico"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "slice_of_life"
+            "name": "slice_of_life",
+            "setupIcon": "pages/public/assets/icon.ico",
+            "iconUrl": "https://raw.githubusercontent.com/SpicyRicecaker/slice-of-life/master/public/assets/icon.ico",
+            "skipUpdateIcon": true
           }
         },
         {

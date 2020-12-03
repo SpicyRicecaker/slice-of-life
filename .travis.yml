@@ -11,7 +11,7 @@ script:
     
 deploy: 
   provider: releases
-  file: out/make/*.exe
+  file: out/make/**/*.exe
   github-token: $GITHUB_TOKEN
   skip_cleanup: true
   on:

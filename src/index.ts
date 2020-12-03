@@ -21,6 +21,9 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     width: width * 0.85,
     height: height * 0.75,
+    icon: app.isPackaged
+      ? path.join(process.resourcesPath, 'icon.ico')
+      : path.join(__dirname, 'pages', 'public', 'assets', 'icon.ico'),
     webPreferences: {
       nodeIntegration: true,
       zoomFactor: 1.5,
@@ -49,8 +52,8 @@ const createWindow = (): void => {
   // Code inspired by https://stackoverflow.com/questions/37828758/electron-js-how-to-minimize-close-window-to-system-tray-and-restore-window-back
   const createTray = (): void => {
     const imgPath = app.isPackaged
-      ? path.join(process.resourcesPath, 'icon.png')
-      : path.join(path.resolve(), 'pages', 'public', 'assets', 'icon.png');
+      ? path.join(process.resourcesPath, 'icon.ico')
+      : path.join(path.resolve(), 'pages', 'public', 'assets', 'icon.ico');
     tray = new Tray(imgPath);
     const contextMenu = Menu.buildFromTemplate([
       {
