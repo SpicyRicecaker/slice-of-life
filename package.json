@@ -5,7 +5,7 @@
   ],
   "name": "slice-of-life",
   "productName": "slice-of-life",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Visualizer for time spent in a day using chart.js",
   "main": "dist/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
           "config": {
             "name": "slice_of_life",
             "setupIcon": "pages/public/assets/icon.ico",
-            "iconUrl": "https://raw.githubusercontent.com/SpicyRicecaker/slice-of-life/master/public/assets/icon.ico",
+            "iconUrl": "https://raw.githubusercontent.com/SpicyRicecaker/slice-of-life/master/pages/public/assets/icon.ico",
             "skipUpdateIcon": true
           }
         },

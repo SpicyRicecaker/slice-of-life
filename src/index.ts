@@ -9,6 +9,9 @@ import {
 } from 'electron';
 import * as path from 'path';
 
+let mainWindow: BrowserWindow = null;
+let tray: Tray;
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   // eslint-disable-line global-require
@@ -18,12 +21,12 @@ if (require('electron-squirrel-startup')) {
 const createWindow = (): void => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: width * 0.85,
     height: height * 0.75,
     icon: app.isPackaged
       ? path.join(process.resourcesPath, 'icon.ico')
-      : path.join(__dirname, 'pages', 'public', 'assets', 'icon.ico'),
+      : path.join(path.resolve(), 'pages', 'public', 'assets', 'icon.ico'),
     webPreferences: {
       nodeIntegration: true,
       zoomFactor: 1.5,
@@ -48,7 +51,6 @@ const createWindow = (): void => {
     }
   });
 
-  let tray: Tray;
   // Code inspired by https://stackoverflow.com/questions/37828758/electron-js-how-to-minimize-close-window-to-system-tray-and-restore-window-back
   const createTray = (): void => {
     const imgPath = app.isPackaged
@@ -78,10 +80,35 @@ const createWindow = (): void => {
   createTray();
 };
 
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  // event, commandline, workingdirectory
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      // Can this be optimized??
+      if (!mainWindow.isVisible()) {
+        mainWindow.show();
+      } else if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+        mainWindow.focus();
+      } else {
+        mainWindow.focus();
+      }
+    }
+  });
+
+  // Create myWindow, load the rest of the app, etc...
+  app.on('ready', createWindow);
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+// app.on('ready', createWindow);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
