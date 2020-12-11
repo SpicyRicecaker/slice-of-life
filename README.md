@@ -2,6 +2,7 @@
   - "Never have a 0% day"
 
 # Bug Fixes / Small Features
+- Last modified not updated instantly for adding onto existing terms...
 - Persist dev console last opened or not
 - Sane defaults for 1080p and lower resolutions
   - (Basically avoid flexbox)
