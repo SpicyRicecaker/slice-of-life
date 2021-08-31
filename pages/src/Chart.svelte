@@ -1,5 +1,6 @@
 <script lang="ts">
-  import Chart from 'chart.js';
+  import { Chart } from 'chart.js';
+  import type { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
   import { onMount } from 'svelte';
   import { doughnut, days, options } from './stores/stores';
 
@@ -45,16 +46,16 @@
     backgroundColor: string[];
   }
 
-  interface chartParameter {
-    type: string;
-    data: {
-      labels: string[];
-      datasets: dataset[];
-    };
-    options: {};
-  }
+  // interface ChartParameter {
+  //   type: string;
+  //   data: {
+  //     labels: string[];
+  //     datasets: dataset[];
+  //   };
+  //   options: {};
+  // }
 
-  let chartParams: chartParameter = {
+  let chartParams: ChartConfiguration = {
     type: 'doughnut',
     data: {
       labels: [],

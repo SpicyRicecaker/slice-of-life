@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { days } from './stores/stores';
-  import { today } from './stores/dayInformation';
-  import { daysDb } from './stores/database';
-  import { promises as fs } from 'fs';
-  import { ipcRenderer } from 'electron';
+  import { days } from "./stores/stores";
+  import { today } from "./stores/dayInformation";
+  import { daysDb } from "./stores/database";
+  import { promises as fs } from "fs";
+  import { ipcRenderer } from "electron";
 
   const pullData = async (currDate: Date) => {
     $days = [];
@@ -49,8 +49,8 @@
     );
     if (dateCursor !== null) {
       for await (const date of dateCursor) {
-        date.value['dateCreated'] = new Date();
-        date.value['dateModified'] = new Date();
+        date.value["dateCreated"] = new Date();
+        date.value["dateModified"] = new Date();
         dateCursor.update(date.value);
       }
     }
@@ -80,44 +80,44 @@
         obj.push(point.value);
       }
 
-      const filePath = await ipcRenderer.invoke('showSaveDialog', {
-        title: 'Save Data',
-        buttonLabel: 'Save',
+      const filePath = await ipcRenderer.invoke("showSaveDialog", {
+        title: "Save Data",
+        buttonLabel: "Save",
         filters: [
           {
-            name: 'Javascript Object Notation',
-            extensions: ['json'],
+            name: "Javascript Object Notation",
+            extensions: ["json"],
           },
         ],
       });
       if (!filePath.canceled) {
         fs.writeFile(filePath.filePath, await JSON.stringify(obj));
       } else {
-        console.log('You canceled the prompt !!');
+        console.log("You canceled the prompt !!");
       }
     }
   };
 
   const loadData = async () => {
     // Prompt to choose file probably
-    const filePath = await ipcRenderer.invoke('showOpenDialog', {
-      title: 'Load File',
-      buttonLabel: 'Load',
+    const filePath = await ipcRenderer.invoke("showOpenDialog", {
+      title: "Load File",
+      buttonLabel: "Load",
       filters: [
         {
-          name: 'Javascript Object Notation',
-          extensions: ['json'],
+          name: "Javascript Object Notation",
+          extensions: ["json"],
         },
       ],
     });
     if (!filePath.canceled) {
       try {
         // Read the json file
-        const content = await fs.readFile(filePath.filePaths[0], 'utf8');
+        const content = await fs.readFile(filePath.filePaths[0], "utf8");
         // Turn it into an actual object
         const obj = JSON.parse(content);
         // Clear the object store
-        await daysDb.clear('days');
+        await daysDb.clear("days");
         // Push the object into the object store
         for (let i = 0; i < obj.length; ++i) {
           obj[i].date = new Date(obj[i].date);
@@ -138,7 +138,7 @@
         return;
       }
     } else {
-      console.log('You canceled lol');
+      console.log("You canceled lol");
     }
   };
 </script>

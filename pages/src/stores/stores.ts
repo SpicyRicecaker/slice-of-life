@@ -6,9 +6,11 @@ export const doughnut: any = writable({});
 
 // Options for chart
 export const options = writable({
-  legend: {
-    display: false,
-  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+  }
 });
 
 // Labels for chart

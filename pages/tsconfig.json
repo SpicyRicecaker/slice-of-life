@@ -13,6 +13,7 @@
     "strict": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
+    "moduleResolution": "node"
     // // Custom things that we need for svelte???
     // "typeRoots": ["node_modules/@types"], // "typeRoots": [] -> won't work
     // "types": ["svelte", "node"]

@@ -1,4 +1,5 @@
-import { IDBPCursorWithValue, IDBPDatabase, openDB } from 'idb/with-async-ittr.js';
+import { openDB } from 'idb/with-async-ittr.js';
+import type { IDBPDatabase, IDBPCursorWithValue } from 'idb';
 import type { Day } from '../typings/types';
 // Create the DB
 class db {
@@ -30,7 +31,7 @@ class db {
   // REMOVE Return self (really shouldn't be a thing)
   getDb = async ():Promise<IDBPDatabase> => this.db;
   // Finds today's date
-  getCursorFromDateRange = async (dateBeg: Date, dateEnd: Date): Promise<IDBPCursorWithValue<unknown, ["days"], "days", unknown> | null> => {
+  getCursorFromDateRange = async (dateBeg: Date, dateEnd: Date): Promise<IDBPCursorWithValue<unknown, ["days"], "days", "date", "readwrite"> | null> => {
     const dateIdx = await (await this.db)
       .transaction('days', 'readwrite')
       .objectStore('days')
@@ -40,7 +41,7 @@ class db {
   };
   // Gets cursor of the entire db
   // Keep in mind that this adds ID fields to all objects for some reason
-  getCursor = async (): Promise<IDBPCursorWithValue<unknown, ["days"], "days", unknown> | null> => {
+  getCursor = async (): Promise<IDBPCursorWithValue<unknown, ["days"], "days", unknown, "readwrite"> | null> => {
     const dateIdx = await (await this.db)
       .transaction('days', 'readwrite')
       .objectStore('days');
