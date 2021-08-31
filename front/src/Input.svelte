@@ -82,7 +82,7 @@
 
     $days = $days;
     // Update the graph
-    $doughnut.update();
+    doughnut.update();
     // Clear the thing
     inputLabel = '';
   };

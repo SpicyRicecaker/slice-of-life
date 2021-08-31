@@ -6,7 +6,7 @@
   const removeData = async (i: number, j: number) => {
     $days[i].data.splice(j, 1);
     $days = $days;
-    $doughnut.update();
+    doughnut.update();
 
     const dateCursor = await daysDb.getCursorFromDateRange(
       $today.getMorning(),

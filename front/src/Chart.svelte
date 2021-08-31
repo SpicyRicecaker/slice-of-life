@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Chart } from 'chart.js';
-  import type { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
+  import { ArcElement, Chart, DoughnutController } from 'chart.js';
+  import type { ChartConfiguration } from 'chart.js';
   import { onMount } from 'svelte';
   import { doughnut, days, options } from './stores/stores';
 
@@ -34,7 +34,7 @@
     }
 
     if (mounted) {
-      $doughnut.update();
+      doughnut.update();
     }
   }
   // https://coolors.co/6699cc-fff275-ff8c42
@@ -69,7 +69,8 @@
       'myChart'
     ) as HTMLCanvasElement).getContext('2d') as CanvasRenderingContext2D;
 
-    $doughnut = new Chart(ctx, chartParams);
+    Chart.register(DoughnutController, ArcElement)
+    doughnut.initalize(ctx, chartParams);
     mounted = true;
   });
 </script>
