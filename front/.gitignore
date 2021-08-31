@@ -3,7 +3,5 @@
 
 # Build artifacts
 /public/build
-/src/**/*.js
-/src/**/*.map
 
 

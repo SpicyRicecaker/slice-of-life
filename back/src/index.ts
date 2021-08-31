@@ -29,12 +29,14 @@ const createWindow = (): void => {
       : path.join(path.resolve(), 'pages', 'public', 'assets', 'icon.ico'),
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
       zoomFactor: 1.5,
     },
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, '../pages/public/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../../front/public/index.html'));
+  console.log(path.join(__dirname, '../../front/public/index.html'));
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();

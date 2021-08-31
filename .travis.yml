@@ -1,13 +1,13 @@
 os: windows
 language: node_js
-node_js: 15.3.0
-cache: yarn
+node_js: stable
+cache: pnpm
 
 install:
-  - yarn install
+  - pnpm install
 
 script:
-  - yarn make
+  - pnpm make
     
 deploy: 
   provider: releases

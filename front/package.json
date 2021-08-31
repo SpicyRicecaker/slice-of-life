@@ -1,8 +1,8 @@
 {
-  "name": "pages",
+  "name": "front",
   "version": "1.0.0",
   "scripts": {
-    "start": "rollup -c -w",
+    "dev": "rollup -c -w",
     "build": "rollup -c",
     "validate": "svelte-check",
     "serve": "sirv public"
