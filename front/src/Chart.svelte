@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { ArcElement, Chart, DoughnutController } from 'chart.js';
-  import type { ChartConfiguration } from 'chart.js';
-  import { onMount } from 'svelte';
-  import { doughnut, days, options } from './stores/stores';
+  import { ArcElement, Chart, DoughnutController } from "chart.js";
+  import type { ChartConfiguration } from "chart.js";
+  import { onMount } from "svelte";
+  import { doughnut, days, options } from "./stores/stores";
 
   let mounted = false;
 
   // Color palette fk
-  const palette = ['#D9E5D6', '#E8B4BC', '#00A7E1', '#EDDEA4', '#32936F'];
+  const palette = ["#D9E5D6", "#E8B4BC", "#00A7E1", "#EDDEA4", "#32936F"];
 
   // Listens for changes in days array, creates an array of array of labels and data based off of that
   $: {
@@ -56,7 +56,7 @@
   // }
 
   let chartParams: ChartConfiguration = {
-    type: 'doughnut',
+    type: "doughnut",
     data: {
       labels: [],
       datasets: [],
@@ -65,14 +65,22 @@
   };
 
   onMount(async () => {
-    let ctx = (document.getElementById(
-      'myChart'
-    ) as HTMLCanvasElement).getContext('2d') as CanvasRenderingContext2D;
+    let ctx = (
+      document.getElementById("canvas") as HTMLCanvasElement
+    ).getContext("2d") as CanvasRenderingContext2D;
 
-    Chart.register(DoughnutController, ArcElement)
+    Chart.register(DoughnutController, ArcElement);
     doughnut.initalize(ctx, chartParams);
     mounted = true;
   });
 </script>
 
-<canvas id="myChart" />
+<canvas id="canvas" />
+
+<style>
+  #canvas {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+  }
+</style>

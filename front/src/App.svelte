@@ -18,11 +18,12 @@
     height: 100%;
     max-width: 100%;
     max-height: 100%;
+    overflow: hidden;
     display: grid;
     // Display grid is always in string
     grid-template:
       'header other' 3rem
-      'chart info' minmax(0, 10fr)
+      'chart info' minmax(0, 1fr)
       / minmax(0, 1fr) minmax(0, 1fr);
     // Make it more native, we can turn it on later if needed
     user-select: none;
@@ -30,7 +31,8 @@
 
   .chart-container {
     grid-area: chart;
-    align-self: center;
+    padding: 1rem;
+    position: relative;
   }
 
   .info {
